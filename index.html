@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Teal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="book/fonts/fonts.css" rel="stylesheet">
 <script src="fengari-web.js" type="text/javascript"></script>
 <script type="application/teal">
@@ -167,8 +168,14 @@ body {
    height: 100%;
 }
 
-h1 {
-   font-weight: 400;
+div.vspacer {
+   width: 100%;
+   flex-grow: 1;
+}
+
+div.hspacer {
+   min-height: 100%;
+   flex-grow: 1;
 }
 
 div#top-menu {
@@ -179,11 +186,6 @@ div#top-menu {
    min-height: 4em;
    display: flex;
    flex-direction: row;
-}
-
-div#top-menu div.hspacer {
-   min-height: 100%;
-   flex-grow: 1;
 }
 
 ul#top-menu-list {
@@ -229,19 +231,26 @@ div#above-the-fold {
    flex-grow: 2;
 }
 
-.menu {
+div.menu {
    width: 100%;
    min-height: 3em;
 }
 
-.vspacer {
+div.logo {
    width: 100%;
    flex-grow: 1;
+   text-align: center;
+   height: 33%;
 }
 
 img#teal-logo {
-   height: 50%;
+   height: 100%;
+   max-width: 50%;
    text-align: center;
+}
+
+h1 {
+   font-weight: 400;
 }
 
 h1#teal-title {
@@ -250,24 +259,30 @@ h1#teal-title {
 
 div#below-the-fold {
    padding-top: 5em;
-   padding-left: 25%;
-   padding-right: 25%;
    margin: 2em;
+   display: flex;
+   flex-direction: row;
+   flex-grow: 2;
 }
 
-.sections h2 {
+div.sections {
+   max-width: 45em;
+   text-align: left;
+}
+
+div.sections h2 {
    color: #008080;
    font-weight: 400;
    padding-top: 3em;
 }
 
-.sections p {
+div.sections p {
    padding-top: 0.5em;
    padding-bottom: 0.5em;
    line-height: 1.5;
 }
 
-.teal-marker {
+span.teal-marker {
    background-color: #00e0e0;
 }
 
@@ -299,10 +314,6 @@ pre.shell-code {
    border-radius: 1em;
 }
 
-.bottom-spacer {
-   height: 10em;
-}
-
 canvas#background {
    position: fixed;
    top: 0;
@@ -310,6 +321,10 @@ canvas#background {
    width: 100vw;
    height: 100vh;
    z-index: -1;
+}
+
+div.bottom {
+   height: 10em;
 }
 
 </style>
@@ -330,12 +345,13 @@ canvas#background {
 <div id="above-the-fold">
 <div class="menu"></div>
 <div class="vspacer"></div>
-<img id="teal-logo" src="img/teal.svg"><br/>
+<div class="logo"><img id="teal-logo" src="img/teal.svg"></div>
 <h1 id="teal-title">The <span class="teal-marker">Teal</span> programming language</h1>
 <div class="vspacer"></div>
 </div>
 
 <div id="below-the-fold">
+<div class="hspacer"></div>
 <div class="sections">
 
 <!---------------------------------------------------------------------------->
@@ -437,8 +453,8 @@ Teal is free and open source software.<br/>Its <a href="https://github.com/teal-
 </p>
 
 </div>
-
-<div class="bottom-spacer"></div>
+<div class="hspacer"></div>
 </div>
+<div class="bottom"></div>
 </body>
 </html>
