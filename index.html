@@ -113,10 +113,10 @@ local function reset_canvas(canvas: Canvas)
    ctx:clearRect(0, 0, canvas.width, canvas.height)
 end
 
-local function draw_logos(ctx: Canvas.Context2D, xarea: number, yarea: number)
+local function draw_logos(ctx: Canvas.Context2D, canvas: Canvas)
    for i = 1, 100 do
-      local cx: number = math.random(math.floor(xarea))
-      local cy: number = math.random(math.floor(yarea))
+      local cx: number = math.random(math.floor(canvas.width))
+      local cy: number = math.random(math.floor(canvas.height))
       local cr: number = math.random(200) + 10
    
       animate_circle(ctx, cx, cy, cr)
@@ -143,11 +143,11 @@ local function main()
       reset_canvas(canvas)
       if logos_done then
          logos_done = false
-         draw_logos(ctx, canvas.width, canvas.height)
+         draw_logos(ctx, canvas)
       end
    end)
 
-   draw_logos(ctx, canvas.width, canvas.height)
+   draw_logos(ctx, canvas)
 end
 
 coroutine.wrap(main)()
