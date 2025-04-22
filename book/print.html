@@ -1,0 +1,2088 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Teal Programming Language</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Teal Programming Language</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="introduction-this-projects-goals"><a class="header" href="#introduction-this-projects-goals">Introduction: this project's goals</a></h2>
+<p>This project comes from the desire of a practical Lua dialect for
+programming-in-the-large. This is inspired by the experiences working on <a href="http://konghq.com">two
+large</a> <a href="http://luarocks.org">Lua applications</a>.</p>
+<p>The goal of the language is to be a dialect of Lua as much as TypeScript is a
+dialect of JavaScript. So yes, it is on the one hand a different language
+(there are new keywords such as <code>global</code> for example) but on the other hand it
+is pretty much recognizable, as you said, as "Lua + typing".</p>
+<p>It aims to integrate to pretty much any Lua environment, since it's a
+"transpiler" that generates plain Lua and has no dependencies. The goal is to
+support at least both the latest PUC-Rio Lua and the latest LuaJIT as output
+targets.</p>
+<p>Minimalism (for some vague definition of minimalism!) is a design goal for
+both conceptual and practical reasons: conceptually to match the nature of
+Lua, and practical so that I can manage developing it. :)</p>
+<p>My very first concrete goal for Teal's development was to have the compiler
+typecheck itself; that was achieved already: Teal is written in Teal.</p>
+<p>The next big goal is to have it typecheck the source code of a complete Lua
+application such as LuaRocks. That's something I wanted since the Typed Lua
+days back in 2015. That's a big goal and once I get there I'll dare call this
+"production ready", since it's used in a real-world program, though it should
+be usable even before we get there! The language has already proven useful
+when creating <a href="https://github.com/hishamhm/tabular">a new Lua module</a>.</p>
+<p>Teal is being created in hopes it will be useful for myself and hopefully
+others. I'm trying to keep it small and long-term manageable, and would love
+to see a community of users and contributors grow around it over time!</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="why-types"><a class="header" href="#why-types">Why Types</a></h2>
+<p>If you're already convinced about the idea of type checking, you may skip this
+part. :)</p>
+<p>The data in your program has types: Lua is a high-level language, so each
+piece of data stored in the memory of the Lua virtual machine has a type:
+number, string, function, boolean, userdata, thread, nil or table.</p>
+<p>Your program is basically a series of manipulations of data of various types.
+The program is correct when it does what it is supposed to do, and that will
+only happen when data is matched with other data of the correct types, like
+pieces of a puzzle: you can multiply a number by another number, but not by a
+boolean; you can call a function, but not a string; and so on.</p>
+<p>The variables of a Lua program, however, know nothing about types. You can put
+any value in any variable at any time, and if you make a mistake and match
+things incorrectly, the program will crash at runtime, or even worse: it will
+misbehave... silently.</p>
+<p>The variables of Teal do know about types: each variable has an assigned type
+and will hold on to that type forever. This way, there's a whole class of
+mistakes that the Teal compiler is able to warn you about before the program
+even runs.</p>
+<p>Of course, it cannot catch every possible mistake in a program, but it should
+help you with things like typos in table fields, missing arguments and so on.
+It will also make you be more explicit about what kind of data your program is
+dealing with: whenever that is not obvious enough, the compiler will ask you
+about it and have you document it via types. It will also constantly check
+that this "documentation" is not out of date. Coding with types is like pair
+programming with the machine.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="programming-with-types-in-teal"><a class="header" href="#programming-with-types-in-teal">Programming with Types in Teal</a></h1>
+<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
+<p>In this tutorial chapter, we will go through the basics so you can get up and running
+type checking your Lua code, through the use of Teal, a typed dialect of Lua.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="installing-tl"><a class="header" href="#installing-tl">Installing tl</a></h2>
+<p>To run tl, the Teal compiler, you need a Lua environment. Install Lua and
+LuaRocks (methods vary according to your operating system), and then run</p>
+<pre><code>luarocks install tl
+</code></pre>
+<p>If your environment is set up correctly, you should have a tl command
+available now!</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="your-first-teal-program"><a class="header" href="#your-first-teal-program">Your first Teal program</a></h2>
+<p>Let's start with a simple example, which declares a type-safe function. Let's
+call this example <code>add.tl</code>:</p>
+<pre><code class="language-lua">local function add(a: number, b: number): number
+   return a + b
+end
+
+local s = add(1,2)
+print(s)
+</code></pre>
+<p>You can type-check it with</p>
+<pre><code>tl check add.tl
+</code></pre>
+<p>You can convert it to Lua with</p>
+<pre><code>tl gen add.tl
+</code></pre>
+<p>This will produce <code>add.lua</code>. But you can also run it directly with</p>
+<pre><code>tl run add.tl
+</code></pre>
+<p>We can also write modules in Teal which we can load from Lua. Let's create our
+first module:</p>
+<pre><code class="language-lua">local addsub = {}
+
+function addsub.add(a: number, b: number): number
+   return a + b
+end
+
+function addsub.sub(a: number, b: number): number
+   return a - b
+end
+
+return addsub
+</code></pre>
+<p>We can generate <code>addsub.lua</code> with</p>
+<pre><code>tl gen addsub.tl
+</code></pre>
+<p>and then require the addsub module from Lua normally. Or we can load the Teal
+package loader, which will allow require to load .tl files directly, without
+having to run <code>tl gen</code> first:</p>
+<pre><code class="language-sh">$ rm addsub.lua
+$ lua
+&gt; tl = require("tl")
+&gt; tl.loader()
+&gt; addsub = require("addsub")
+&gt; print (addsub.add(10, 20))
+</code></pre>
+<p>When loading and running the Teal module from Lua, there is no type checking!
+Type checking will only happen when you run <code>tl check</code> or load a program with
+<code>tl run</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="types-in-teal"><a class="header" href="#types-in-teal">Types in Teal</a></h2>
+<p>Teal is a dialect of Lua. This tutorial will assume you already know Lua, so
+we'll focus on the things that Teal adds to Lua, and those are primarily type
+declarations.</p>
+<p>Types in Teal are more specific than in Lua, because Lua tables are so general.
+These are the basic types in Teal:</p>
+<ul>
+<li><code>any</code></li>
+<li><code>nil</code></li>
+<li><code>boolean</code></li>
+<li><code>integer</code></li>
+<li><code>number</code></li>
+<li><code>string</code></li>
+<li><code>thread</code> (coroutine)</li>
+</ul>
+<p>Note: An <code>integer</code> is a sub-type of number; it is of undefined precision,
+deferring to the Lua VM.</p>
+<p>You can also declare more types using type constructors. This is the summary
+list with a few examples of each; we'll discuss them in more detail below:</p>
+<ul>
+<li>arrays - <code>{number}</code>, <code>{{number}}</code></li>
+<li>tuples - <code>{number, integer, string}</code></li>
+<li>maps - <code>{string:boolean}</code></li>
+<li>functions - <code>function(number, string): {number}, string</code></li>
+</ul>
+<p>Finally, there are types that must be declared and referred to using names:</p>
+<ul>
+<li>enums</li>
+<li>records</li>
+<li>interfaces</li>
+</ul>
+<p>Here is an example declaration of each. Again, we'll go into more detail below,
+but this should give you an overview:</p>
+<pre><code class="language-lua">-- an enum: a set of accepted strings
+local enum State
+   "open"
+   "closed"
+end
+
+-- a record: a table with a known set of fields
+local record Point
+   x: number
+   y: number
+end
+
+-- an interface: an abstract record type
+local interface Character
+   sprite: Image
+   position: Point
+   kind: string
+end
+
+-- records can implement interfaces, using a type-identifying `where` clause
+local record Spaceship
+   is Character
+   where self.kind == "spaceship"
+
+   weapon: Weapons
+end
+
+-- a record can also declare an array interface, making it double as a record and an array
+local record TreeNode&lt;T&gt;
+   is {TreeNode&lt;T&gt;}
+
+   item: T
+end
+
+-- a userdata record: a record which is implemented as a userdata
+local record File
+   is userdata
+
+   status: function(): State
+   close: function(File): boolean, string
+end
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="arrays"><a class="header" href="#arrays">Arrays</a></h2>
+<p>The simplest structured type in Teal is the array. An array is a Lua table where
+all keys are numbers and all values are of the same type. It is in fact a Lua
+sequence, and as such it has the same semantics as Lua sequences for things
+like the # operator and the use of the <code>table</code> standard library.</p>
+<p>Arrays are described with curly brace notation, and can be denoted via
+declaration or initialization:</p>
+<pre><code class="language-lua">local values: {number}
+local names = {"John", "Paul", "George", "Ringo"}
+</code></pre>
+<p>Note that values was initialized to nil. To initialize it with an empty table,
+you have to do so explicitly:</p>
+<pre><code class="language-lua">local prices: {number} = {}
+</code></pre>
+<p>Creating empty tables to fill an array is so common that Teal includes a naive
+inference logic to support determining the type of empty tables with no
+declaration. The first array assignment to an empty table, reading the code
+top-to-bottom, determines its type. So this works:</p>
+<pre><code class="language-lua">local lengths = {}
+for i, n in ipairs(names) do
+   table.insert(lengths, #n) -- this makes the  lengths table a {number}
+end
+</code></pre>
+<p>Note that this works even with library calls. If you make assignments of
+conflicting types, the tl compiler will tell you in its error message from
+which point in the program it originally got the idea that the empty table was
+an array of that incompatible type.</p>
+<p>Note also that we didn't need to declare the types of i and n in the above
+example: the for statement can infer those from the return type of the
+iterator function produced by the ipairs call. Feeding ipairs with a {string}
+means that the iteration variables of the <code>ipairs</code> loop will be number and
+string. For an example of a custom user-written iterator, see the <a href="arrays.html#functions">Functions</a>
+section below.</p>
+<p>Note that all items of the array are expected to be of the same type. If you
+need to deal with heterogeneous arrays, you will have to use the cast operator
+<code>as</code> to force the elements to their desired types. Keep in mind that when you
+use <code>as</code>, Teal will accept whatever type you use, meaning that it can also hide
+incorrect usage of data:</p>
+<pre><code class="language-lua">local sizes: {number} = {34, 36, 38}
+sizes[#sizes + 1] = true as number -- this does not perform a conversion! it will just stop tl from complaining!
+local sum = 0
+for i = 1, #sizes do
+   sum = sum + sizes[i] -- will crash at runtime!
+end
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="tuples"><a class="header" href="#tuples">Tuples</a></h2>
+<p>Another common usage of tables in Lua are tuples: tables containing an ordered set
+of elements of known types assigned to its integer keys.</p>
+<pre><code class="language-lua">-- Tuples of type {string, integer} containing names and ages
+local p1 = { "Anna", 15 }
+local p2 = { "Bob", 37 }
+local p3 = { "Chris", 65 }
+</code></pre>
+<p>When indexing into tuples with number constants, their type is correctly
+inferred, and trying to go out of range will produce an error.</p>
+<pre><code class="language-lua">local age_of_p1: number = p1[2] -- no type errors here
+local nonsense = p1[3] -- error! index 3 out of range for tuple {1: string, 2: integer}
+</code></pre>
+<p>When indexing with a <code>number</code> variable, Teal will do its best by making a
+<a href="tuples.html#union-types">union</a> of all the types in the tuple (following the
+restrictions on unions detailed below)</p>
+<pre><code class="language-lua">local my_number = math.random(1, 2)
+local x = p1[my_number] -- =&gt; x is a string | number union
+if x is string then
+   print("Name is " .. x .. "!")
+else
+   print("Age is " .. x)
+end
+</code></pre>
+<p>Tuples will additionally help you keep track of accidentally adding more
+elements than they expect (as long as their length is explicitly annotated and not
+inferred).</p>
+<pre><code class="language-lua">local p4: {string, integer} = { "Delilah", 32, false } -- error! expected maximum length of 2, got 3
+</code></pre>
+<p>One thing to keep in mind when using tuples versus arrays is type inference,
+and when you should or shouldn't need it. A table will be inferred as an array
+if all of its elements are the same type, and as a tuple if any of its types
+aren't the same. So if you want an array of a union type instead of a tuple,
+explicitly annotate it as such:</p>
+<pre><code class="language-lua">local array_of_union: {string | number} = {1, 2, "hello", "hi"}
+</code></pre>
+<p>And if you want a tuple where all elements have the same type, annotate that
+as well:</p>
+<pre><code class="language-lua">local tuple_of_nums: {number, number} = {1, 2}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="maps"><a class="header" href="#maps">Maps</a></h2>
+<p>Another very common type of table is the map: a table where all keys of one
+given type, and all values are of another given type, which may or may not be
+the same as that of the keys. Maps are notated with curly brackets and a
+colon:</p>
+<pre><code class="language-lua">local populations: {string:number}
+local complicated: {Object:{string:{Point}}} = {}
+local modes = { -- this is {boolean:number}
+   [false] = 127,
+   [true] = 230,
+}
+</code></pre>
+<p>In case you're wondering, yes, an array is functionally equivalent to a map
+with keys of type number.</p>
+<p>When creating a map with string keys you may want to declare its type
+explicitly, so it doesn't get mistaken for a record. Records are freely usable
+as maps with string keys when all its fields are of the same type, so you
+wouldn't have to annotate the type to get a correct program, but the
+annotation will help the compiler produce better error messages if any errors
+occur involving this variable:</p>
+<pre><code class="language-lua">local is_vowel: {string:boolean} = {
+   a = true,
+   e = true,
+   i = true,
+   o = true,
+   u = true,
+}
+</code></pre>
+<p>For now, if you have to deal with heterogeneous maps (that is, Lua tables with
+a mix of types in their keys or values), you'll have to use casts.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="records"><a class="header" href="#records">Records</a></h2>
+<p>Records are the third major type of table supported in Teal. They represent
+another super common pattern in Lua code, so much that Lua includes special
+syntax for it (the dot and colon notations for indexing): tables with a set of
+string keys known in advance, each of them corresponding to a possibly
+different value type. Records (named as such in honor of the Algol/Pascal
+tradition from which Lua gets much of the feel of its syntax) can be used
+to represent objects, "structs", etc.</p>
+<p>To declare a record variable, you need to create a record type first.
+The type describes the set of valid fields (keys of type string and their values
+of specific types) this record can take. You can declare types using <code>local type</code> and global types using <code>global type</code>.</p>
+<pre><code class="language-lua">local type Point = record
+   x: number
+   y: number
+end
+</code></pre>
+<p>Types are constant: you cannot reassign them, and they must be initialized with
+a type on declaration.</p>
+<p>Just like with functions in Lua, which can be declared either with <code>local f = function()</code> or with <code>local function f()</code>, there is also a shorthand syntax
+available for the declaration of record types:</p>
+<pre><code class="language-lua">local record Point
+   x: number
+   y: number
+end
+</code></pre>
+<p>Tables that match the shape of the record type will be accepted as an
+initializer of variables declared with the record type:</p>
+<pre><code class="language-lua">local p: Point = { x = 100, y = 100 }
+</code></pre>
+<p>This, however, won't work:</p>
+<pre><code class="language-lua">local record Vector
+   x: number
+   y: number
+end
+
+local v1: Vector = { x = 100, y = 100 }
+local p2: Point = v1 -- Error!
+</code></pre>
+<p>Just because a table has fields with the same names and types, it doesn't mean
+that it is a Point. This is because records in Teal are <a href="aliasing.html">nominal
+types</a>.</p>
+<p>You can always force a type, though, using the <code>as</code> operator:</p>
+<pre><code class="language-lua">local p2 = v1 as Point -- Teal goes "ok, I'll trust you..."
+</code></pre>
+<p>Note we didn't even have to declare the type of p2. The <code>as</code> expression resolves
+as a Point, so p2 picks up that type.</p>
+<p>You can also declare record functions after the record definition using the
+regular Lua colon or dot syntax, as long as you do it in the same scope block
+where the record type is defined:</p>
+<pre><code class="language-lua">function Point.new(x: number, y: number): Point
+   local self: Point = setmetatable({}, { __index = Point })
+   self.x = x or 0
+   self.y = y or 0
+   return self
+end
+
+function Point:move(dx: number, dy: number)
+   self.x = self.x + dx
+   self.y = self.y + dy
+end
+</code></pre>
+<p>When using the function, don't worry: if you get the colon or dot mixed up, tl
+will detect and tell you about it!</p>
+<p>If you want to define the function in a later scope (for example, if it is a
+callback to be defined by users of a module you are creating), you can declare
+the type of the function field in the record and fill it later from anywhere:</p>
+<pre><code class="language-lua">local record Obj
+   location: Point
+   draw: function(Obj)
+end
+</code></pre>
+<p>A record can also store array data, by declaring an array interface. You can
+use it both as a record, accessing its fields by name, and as an array,
+accessing its entries by number. A record can have only one array interface.</p>
+<pre><code class="language-lua">local record Node is {Node}
+   weight: number
+   name: string
+end
+</code></pre>
+<p>Note the recursive definition in the above example: records of type Node can
+be organized as a tree using its array part.</p>
+<p>Finally, records can contain nested record type definitions. This is useful
+when exporting a module as a record, so that the types created in the module
+can be used by the client code which requires the module.</p>
+<pre><code class="language-lua">local record http
+
+   record Response
+      status_code: number
+   end
+
+   get: function(string): Response
+end
+
+return http
+</code></pre>
+<p>You can then refer to nested types with the normal dot notation, and use
+it across required modules as well:</p>
+<pre><code class="language-lua">local http = require("http")
+
+local x: http.Response = http.get("http://example.com")
+print(x.status_code)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="interfaces"><a class="header" href="#interfaces">Interfaces</a></h2>
+<p>Interfaces are, in essence, abstract records.</p>
+<p>A concrete record is a type declared with <code>record</code>, which can be used
+both as a Lua table and as a type. In object-oriented terms, the record
+itself works as class whose fields work as class attributes,
+while other tables declared with the record type are objects whose
+fields are object atributes. For example:</p>
+<pre><code class="language-lua">local record MyConcreteRecord
+   a: string
+   x: integer
+   y: integer
+end
+
+MyConcreteRecord.a = "this works"
+
+local obj: MyConcreteRecord = { x = 10, y = 20 } -- this works too
+</code></pre>
+<p>An interface is abstract. It can declare fields, including those of
+<code>function</code> type, but they cannot hold concrete values on their own.
+Instances of an interface can hold values.</p>
+<pre><code class="language-lua">local interface MyAbstractInterface
+   a: string
+   x: integer
+   y: integer
+   my_func: function(self, integer)
+   another_func: function(self, integer, self)
+end
+
+MyAbstractInterface.a = "this doesn't work" -- error!
+
+local obj: MyAbstractInterface = { x = 10, y = 20 } -- this works
+
+-- error! this doesn't work
+function MyAbstractInterface:my_func(n: integer)
+end
+
+-- however, this works
+obj.my_func = function(self: MyAbstractInterface, n: integer)
+end
+</code></pre>
+<p>What is most useful about interfaces is that records can inherit
+interfaces, using <code>is</code>:</p>
+<pre><code class="language-lua">local record MyRecord is MyAbstractInterface
+   b: string
+end
+
+local r: MyRecord = {}
+r.b = "this works"
+r.a = "this works too because 'a' comes from MyAbstractInterface"
+</code></pre>
+<p>Note that the definition of <code>my_func</code> used <code>self</code> as a type name. <code>self</code>
+is a valid type that can be used when declaring arguments in functions
+declared in interfaces and records. When a record is declared to be a subtype
+of an interface using <code>is</code>, any function arguments using <code>self</code> in the parent
+interface type will then resolve to the child record's type. The type signature
+of <code>another_func</code> makes it even more evident:</p>
+<pre><code class="language-lua">-- the following function complies to the type declared for `another_func`
+-- in MyAbstractInterface, because MyRecord is the `self` type in this context
+function MyRecord:another_func(n: integer, another: MyRecord)
+   print(n + self.x, another.b)
+end
+</code></pre>
+<p>Records and interfaces can inherit from multiple interfaces,
+as long as their component parts are compatible (that is, as long
+as the parent interfaces don't declare fields with the same name
+but different types). Here is an example showing how incompatible
+fields need to be stated explicitly, but compatible fields can be
+inherited:</p>
+<pre><code class="language-lua">local interface Shape
+   x: number
+   y: number
+end
+
+local interface Colorful
+   r: integer
+   g: integer
+   b: integer
+end
+
+local interface SecondPoint
+   x2: number
+   y2: number
+   get_distance: function(self): number
+end
+
+local record Line is Shape, SecondPoint
+end
+
+local record Square is Shape, SecondPoint, Colorful
+   get_area: function(self): number
+end
+
+--[[
+-- this produces a record with these fields,
+-- but Square also satisfies `Square is Shape`,
+-- `Square is SecondPoint`, `Square is Colorful`
+local record Square
+   x: number
+   y: number
+   x2: number
+   y2: number
+   get_distance: function(self): number
+   r: integer
+   g: integer
+   b: integer
+   get_area: function(self): number
+end
+]]
+</code></pre>
+<p>Keep in mind that this refers strictly to subtyping of interfaces, not
+inheritance of implementations. For that reason, records cannot inherit from
+other records; that is, you cannot use <code>is</code> to do <code>local record MyRecord is AnotherRecord</code>. You can define function fields in your interfaces and those
+definitions will be inherited (as in the <code>get_distance</code> and <code>get_area</code>
+examples above), but you need to ensure that the actual implementations of
+these functions are resolved at runtime the same way as they would do in Lua,
+most likely using metatables to perform implementation inheritance. Teal
+does not implement a class/object model of its own, as it aims to be compatible
+with the multiple class/object models that exist in the Lua ecosystem.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="generics"><a class="header" href="#generics">Generics</a></h2>
+<p>Teal supports a simple form of generics that is useful enough for dealing
+collections and algorithms that operate over abstract data types.</p>
+<p>You can use type variables wherever a type is used, and you can declare them
+in both functions and records. Here's an example of a generic function:</p>
+<pre><code class="language-lua">local function keys&lt;K,V&gt;(xs: {K:V}):{K}
+   local ks = {}
+   for k, v in pairs(xs) do
+      table.insert(ks, k)
+   end
+   return ks
+end
+
+local s = keys({ a = 1, b = 2 }) -- s is {string}
+</code></pre>
+<p>we declare the type variables in angle brackets and use them as types. Generic
+records are declared and used like this:</p>
+<pre><code class="language-lua">local type Tree = record&lt;X&gt;
+   {Tree&lt;X&gt;}
+   item: X
+end
+
+local t: Tree&lt;number&gt; = {
+   item = 1,
+   { item = 2 },
+   { item = 3, { item = 4 } },
+}
+</code></pre>
+<p>A type variable can be constrained by an interface, using <code>is</code>:</p>
+<pre><code class="language-lua">local function largest_shape&lt;S is Shape&gt;(shapes: {S}): S
+   local max = 0
+   local largest: S
+   for _, s in ipairs(shapes) do
+      if s.area &gt;= max then
+         max = s.area
+         largest = s
+      end
+   end
+   return largest
+end
+</code></pre>
+<p>The benefit of doing this instead of <code>largest_shape(shapes: {Shape}): Shape</code>
+is that, if you call this function passing, say, an array <code>{Circle}</code>
+(assuming that <code>record Circle is Shape</code>, Teal will infer <code>S</code> to <code>Circle</code>,
+and that will be the type of the return value, while still allowing you
+to use the specifics of the <code>Shape</code> interface within the implementation of
+<code>largest_shape</code>.</p>
+<p>Keep in mind though, the type variables are inferred upon their first match,
+so, especially when using constraints, that might demand <a href="type_variables.html">additional
+care</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="enums"><a class="header" href="#enums">Enums</a></h2>
+<p>Enums are a restricted type of string value, which represent a common practice
+in Lua code: using a limited set of string constants to describe an
+enumeration of possible values.</p>
+<p>You describe an enum like this:</p>
+<pre><code class="language-lua">local type Direction = enum
+   "north"
+   "south"
+   "east"
+   "west"
+end
+</code></pre>
+<p>or like this:</p>
+<pre><code class="language-lua">local enum Direction
+   "north"
+   "south"
+   "east"
+   "west"
+end
+</code></pre>
+<p>Variables and arguments of this type will only accept values from the declared
+list. Enums are freely convertible to strings, but not the other way around.
+You can of course promote an arbitrary string to an enum with a cast.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<p>Functions in Teal should work like you expect, and we have already showed
+various examples.</p>
+<p>You can declare nominal function types, like we do for records, to avoid
+longwinded type declarations, especially when declaring functions that take
+callbacks. This is done with using <code>function</code> types, and they can be generic as
+well:</p>
+<pre><code class="language-lua">local type Comparator = function&lt;T&gt;(T, T): boolean
+
+local function mysort&lt;A&gt;(arr: {A}, cmp?: Comparator&lt;A&gt;)
+   -- ...
+end
+</code></pre>
+<p>Note that functions can have optional arguments, as in the <code>cmp?</code> example above.
+This only affects the <em>arity</em> of the functions (that is, the number of arguments
+passed to a function), not their types. Note that the question mark is assigned
+to the argument name, not its type. If an argument is not optional, it may still
+be given explicitly as <code>nil</code>.</p>
+<p>Another thing to know about function declarations is that you can parenthesize
+the declaration of return types, to avoid ambiguities when using nested
+declarations and multiple returns:</p>
+<pre><code class="language-lua">f: function(function(? string):(number, number), number)
+</code></pre>
+<p>Note also that in this example the string argument of the return function type
+is optional. When declaring optional arguments in function type declarations
+which do not use argument names, The question mark is placed ahead of the
+type. Again, this is an attribute of the argument position, not of the
+argument type itself.</p>
+<p>You can declare functions that generate iterators which can be used in
+<code>for</code> statements: the function needs to produce another function that iterates.
+This is an example <a href="https://www.lua.org/pil/7.1.html">taken the book "Programming in Lua"</a>:</p>
+<pre><code class="language-lua">local function allwords(): (function(): string)
+   local line = io.read()
+   local pos = 1
+   return function(): string
+      while line do
+         local s, e = line:find("%w+", pos)
+         if s then
+            pos = e + 1
+            return line:sub(s, e)
+         else
+            line = io.read()
+            pos = 1
+         end
+      end
+      return nil
+   end
+end
+
+for word in allwords() do
+   print(word)
+end
+</code></pre>
+<p>The only changes made to the code above were the addition of type signatures
+in both function declarations.</p>
+<p>Teal also supports <a href="macroexp.html">macro expressions</a>, which are a restricted
+form of function whose contents are expanded inline when generating Lua code.</p>
+<h3 id="variadic-functions"><a class="header" href="#variadic-functions">Variadic functions</a></h3>
+<p>Just like in Lua, some functions in Teal may receive a variable amount of
+arguments. Variadic functions can be declared by specifying <code>...</code> as the last
+argument of the function:</p>
+<pre><code class="language-lua">local function test(...: number)
+   print(...)
+end
+
+test(1, 2, 3)
+</code></pre>
+<p>In case your function returns a variable amount of values, you may also declare
+variadic return types by using the <code>type...</code> syntax:</p>
+<pre><code class="language-lua">local function test(...: number): number...
+   return ...
+end
+
+local a, b, c = test(1, 2, 3)
+</code></pre>
+<p>If your function is very dynamic by nature (for example, you are typing a
+Lua function that can return anything), a typical return type will be <code>any...</code>.
+When using these functions, often one knows at the call site what are the
+types of the expected returns, given the arguments that were passed. To set
+the types of these dynamic returns, you can use the <code>as</code> operator over
+multiple values, using a parenthesized list of types:</p>
+<pre><code class="language-lua">local s = { 1234, "ola" }
+local a, b = table.unpack(s) as (number, string)
+
+print(a + 1)      -- `a` has type number
+print(b:upper())  -- `b` has type string
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="union-types"><a class="header" href="#union-types">Union types</a></h2>
+<p>The language supports a basic form of union types. You can register a type that
+is a logical "or" of multiple types: it will accept values from multiple types,
+and you can discriminate them at runtime.</p>
+<p>You can declare union types like this:</p>
+<pre><code class="language-lua">local a: string | number | MyRecord
+local b: {boolean} | MyEnum
+local c: number | {string:number}
+</code></pre>
+<p>To use a value of this type, you need to discriminate the variable, using the
+<code>is</code> operator, which takes a variable of a union type and one of its types:</p>
+<pre><code class="language-lua">local a: string | number | MyRecord
+
+if a is string then
+   print("Hello, " .. a)
+elseif a is number then
+   print(a + 10)
+else
+   print(a.my_record_field)
+end
+</code></pre>
+<p>As you can see in the example above, each use of the <code>is</code> operator causes the
+type of the variable to be properly narrowed to the type tested in its
+respective block.</p>
+<p>The flow analysis of <code>is</code> also takes effect within expressions:</p>
+<pre><code class="language-lua">local a: string | number
+
+local x: number = a is number and a + 1 or 0
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="the-type-any"><a class="header" href="#the-type-any">The type <code>any</code></a></h2>
+<p>The type <code>any</code>, as it name implies, accepts any value, like a dynamically-typed
+Lua variable. However, since Teal doesn't know anything about this value, there
+isn't much you can do with it, besides comparing for equality and against nil,
+and casting it into other values using the <code>as</code> operator.</p>
+<p>Some Lua libraries use complex dynamic types that can't be easily represented
+in Teal. In those cases, using <code>any</code> and making explicit casts is our last
+resort.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="local-variables"><a class="header" href="#local-variables">Local variables</a></h2>
+<p>Variables in Teal have types. So, when you declare a variable with the <code>local</code>
+keyword, you need to provide enough information so that the type can be determined.
+For this reason, it is not valid in Teal to declare a variable with no type at all
+like this:</p>
+<pre><code class="language-lua">local x -- Error! What is this?
+</code></pre>
+<p>There are two ways, however, to give a variable a type:</p>
+<ul>
+<li>through declaration</li>
+<li>through initialization</li>
+</ul>
+<p>Declaration is done writing a colon and a type. When declaring multiple
+variables at once, each variable should have its own type:</p>
+<pre><code class="language-lua">local s: string
+local r, g, b: number, number, number
+local ok: boolean
+</code></pre>
+<p>You don't need to write the type if you are initializing the variable on
+creation:</p>
+<pre><code class="language-lua">local s = "hello"
+local r, g, b = 0, 128, 128
+local ok = true
+</code></pre>
+<p>If you initialize a variable with nil and don't give it any type, this doesn't
+give any useful information to work with (you don't want your variable to
+be always nil throughout the lifetime of your program, right?) so you will
+have to declare the type explicitly:</p>
+<pre><code>local n: number = nil
+</code></pre>
+<p>This is the same as omitting the <code> = nil</code>, like in plain Lua, but it gives the
+information the Teal program needs. Every type in Teal accepts nil as a valid
+value, even if, like in Lua, attempting to use it with some operations would
+cause a runtime error, so be aware!</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="global-variables"><a class="header" href="#global-variables">Global variables</a></h2>
+<p>Unlike in Lua, global variables in Teal need to be declared, because the
+compiler needs to know its type. It also allows the compiler to catch typos in
+variable names, because an invalid name will not be assumed to be some unknown
+global that happens to be nil.</p>
+<p>You declare global variables in Teal using <code>global</code>, like this, doing
+declaration and/or assignment:</p>
+<pre><code class="language-lua">global n: number
+
+global m: {string:boolean} = {}
+
+global hi = function(): string
+   return "hi"
+end
+
+global function my_function()
+   print("I am a global function")
+end
+</code></pre>
+<p>You can also declare global types, which are visible across modules, as long
+as their definition has been previously required:</p>
+<pre><code class="language-lua">-- mymod.tl
+local mymod = {}
+
+global type MyPoint = record
+   x: number
+   y: number
+end
+
+return mymod
+</code></pre>
+<pre><code class="language-lua">-- main.tl
+local mymod = require("mymod")
+
+local function do_something(p: MyPoint)
+   -- ...
+end
+</code></pre>
+<p>If you have circular type dependencies that span multiple files, you can
+forward-declare a global type by specifying its name but not its implementation:</p>
+<pre><code class="language-lua">-- person.tl
+local person = {}
+
+global type Building
+
+global record Person
+   residence: Building
+end
+
+return person
+</code></pre>
+<pre><code class="language-lua">-- building.tl
+local building = {}
+
+global type Person
+
+global record Building
+   owner: Person
+end
+
+return building
+</code></pre>
+<pre><code class="language-lua">-- main.tl
+local person = require("person")
+local building = require("building")
+
+local b: Building = {}
+local p: Person = { residence = b }
+
+b.owner = p
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="variable-attributes"><a class="header" href="#variable-attributes">Variable attributes</a></h2>
+<p>Teal supports variable annotations, with similar syntax and behavior to those
+from Lua 5.4. They are:</p>
+<h3 id="const-variables"><a class="header" href="#const-variables">Const variables</a></h3>
+<p>The <code>&lt;const&gt;</code> annotation works in Teal like it does in Lua 5.4 (it works at
+compile time, even if you're running a different version of Lua). Do note
+however that this is annotation for variables, and not values: the contents of a
+value set to a const variable are not constant.</p>
+<pre><code class="language-lua">local xs &lt;const&gt; = {1,2,3}
+xs[1] = 999 -- ok! the array is not frozen
+xs = {} -- Error! can't replace the array in variable xs
+</code></pre>
+<h3 id="to-be-closed-variables"><a class="header" href="#to-be-closed-variables">To-be-closed variables</a></h3>
+<p>The <code>&lt;close&gt;</code> annotation from Lua 5.4 is only supported in Teal if your code
+generation target is Lua 5.4 (see the <a href="compiler_options.html">compiler options</a>
+documentation for details on code generation targets). These work just
+<a href="https://www.lua.org/manual/5.4/manual.html#3.3.8">like they do in Lua 5.4</a>.</p>
+<pre><code class="language-lua">local contents = {}
+for _, name in ipairs(filenames) do
+   local f &lt;close&gt; = assert(io.open(name, "r"))
+   contents[name] = f:read("*a")
+   -- no need to call f:close() because files have a __close metamethod
+end
+</code></pre>
+<h3 id="total-variables"><a class="header" href="#total-variables">Total variables</a></h3>
+<p>The <code>&lt;total&gt;</code> annotation is specific to Teal. It declares a const variable
+assigned to a table value in which all possible keys need to be explicitly
+declared. Note that you can only use <code>&lt;total&gt;</code> when assigning to a literal
+table value, that is, when you are spelling out a table using a <code>{}</code> block.</p>
+<p>Of course, not all types allow you to enumerate all possible keys: there is an
+infinite number (well, not infinite because we're talking about computers, but
+an impractically large number!) of possible strings and numbers, so maps keyed
+by these types can't ever be total. Examples of valid key types for a total map
+are booleans (for which there are only two possible values) and, most usefully,
+enums.</p>
+<p>Enums are the prime case for total variables: it is common to declare a number
+of cases in an enum and then to have a map of values that handle each of these
+cases. By declaring that map <code>&lt;total&gt;</code> you can be sure that you won't forget to
+add handlers for the new cases as you add new entries to the enum.</p>
+<pre><code class="language-lua">local degrees &lt;total&gt;: {Direction:number} = {
+   ["north"] = 0,
+   ["west"] = 90,
+   ["south"] = 180,
+   ["east"] = 270,
+}
+
+-- if you later update the `Direction` enum to add new directions
+-- such as "northeast" and "southwest", the above declaration of
+-- `degrees` will issue a compile-time error, because the table
+-- above is no longer total!
+</code></pre>
+<p>Another example of types that have a finite set of valid keys are records. By
+marking a record variable as <code>&lt;total&gt;</code>, you make it so it becomes mandatory to
+declare all its fields in the given initialization table.</p>
+<pre><code class="language-lua">local record Color
+   red: integer
+   green: integer
+   blue: integer
+end
+
+local teal_color &lt;total&gt;: Color = {
+   red = 0,
+   green = 128,
+   blue = 128,
+}
+
+-- if you later update the `Color` record to add a new component
+-- such as `alpha`, the above declaration of `teal_color`
+-- will issue a compile-time error, because the table above
+-- is no longer total!
+</code></pre>
+<p>Note however that the totality check refers only to the presence of explicit
+declarations: it will still accept an assignment to <code>nil</code> as a valid
+declaration. The rationale is that an explicit <code>nil</code> entry means that the
+programmer did consider that case, and chose to keep it empty. Therefore,
+something like this works:</p>
+<pre><code class="language-lua">local vertical_only &lt;total&gt;: {Direction:MotionCallback} = {
+   ["north"] = move_up,
+   ["west"] = nil,
+   ["south"] = move_down,
+   ["east"] = nil,
+}
+
+-- This declaration is fine: the map is still total, as we are
+-- explicitly mentioning which cases are left empty in it.
+</code></pre>
+<p><em>(Side note: the name "total" comes from the concept of a "total relation" in
+mathematics, which is a relation where, given a set of "keys" mapping to a set
+of "values", the keys fully cover the domain of their type).</em></p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="metamethods"><a class="header" href="#metamethods">Metamethods</a></h2>
+<p>Lua supports metamethods to provide some advanced features such as operator
+overloading. Like Lua tables, records support metamethods. To use metamethods
+in records you need to do two things:</p>
+<ul>
+<li>declare the metamethods in the record type using the <code>metamethod</code> word to
+benefit from static type checking;</li>
+<li>and assign the metatable with <code>setmetatable</code> as you would normally do in Lua
+to get the dynamic metatable behavior.</li>
+</ul>
+<p>Here is a complete example, showing the <code>metamethod</code> declarations in the
+<code>record</code> block and the <code>setmetatable</code> declarations attaching the metatable.</p>
+<pre><code class="language-lua">local type Rec = record
+   x: number
+   metamethod __call: function(Rec, string, number): string
+   metamethod __add: function(Rec, Rec): Rec
+end
+
+local rec_mt: metatable&lt;Rec&gt;
+rec_mt = {
+   __call = function(self: Rec, s: string, n: number): string
+      return tostring(self.x * n) .. s
+   end,
+   __add = function(a: Rec, b: Rec): Rec
+      local res: Rec = setmetatable({}, rec_mt)
+      res.x = a.x + b.x
+      return res
+   end,
+}
+
+local r: Rec = setmetatable({ x = 10 }, rec_mt)
+local s: Rec = setmetatable({ x = 20 }, rec_mt)
+
+r.x = 12
+print(r("!!!", 1000)) -- prints 12000!!!
+print((r + s).x)      -- prints 32
+</code></pre>
+<p>Note that we explicitly declare variables as <code>Rec</code> when initializing the
+declaration with <code>setmetatable</code>. The Teal standard library definiton of
+<code>setmetatable</code> is <code>function&lt;T&gt;(T, metatable&lt;T&gt;): T</code>, so declaring the correct
+record type in the declaration assigns the record type to the type variable
+<code>T</code> in the return value of the function call, causing it to propagate to the
+argument types, matching the correct table and metatable types.</p>
+<p>Operator metamethods for integer division <code>//</code> and bitwise operators are
+supported even when Teal runs on top of Lua versions that do not support them
+natively, such as Lua 5.1.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="macro-expressions"><a class="header" href="#macro-expressions">Macro expressions</a></h1>
+<p>Teal supports a restricted form of macro expansion via the <code>macroexp</code>
+construct, which declares a macro expression. This was added to the
+language as the support mechanism for implementing the <code>where</code> clauses
+in records and interfaces, which power the type resolution performed
+by the <code>is</code> operator.</p>
+<p>Macro expressions are always expanded inline in the generated Lua code.
+The declaration itself produces no Lua code.</p>
+<p>A macro expression is declared similarly to a function, only using
+<code>macroexp</code> instead of <code>function</code>:</p>
+<pre><code class="language-lua">local macroexp add(a: number, b: number)
+   return a + b
+end
+</code></pre>
+<p>There are two important restrictions:</p>
+<ul>
+<li>the body of the macro expression can only contain a single <code>return</code>
+statement with a single expression;</li>
+<li>each argument can only be used once in the macroexp body.</li>
+</ul>
+<p>The latter restriction allows for macroexp calls to be expanded inline in any
+expression context, without the risk for producing double evaluation of
+side-effecting expressions. This avoids the pitfalls commonly produced by C
+macros in a simple way.</p>
+<p>Because macroexps do not generate code on declaration, you can also
+declare a macroexp inline in a record definition:</p>
+<pre><code class="language-lua">local record R
+   x: number
+
+   get_x: function(self): number = macroexp(self: R): number
+      return self.x
+   end
+end
+
+local r: R = { x = 10 }
+print(r:get_x())
+</code></pre>
+<p>This generates the following code:</p>
+<pre><code class="language-lua">local r: R = { x = 10 }
+print(r.x)
+</code></pre>
+<p>You can also use them for metamethods: this will cause the metamethod to
+be expanded at compile-time, without requiring a metatable:</p>
+<pre><code class="language-lua">local record R
+   x: number
+
+   metamethod __lt: function(a: R, b: R) = macroexp(a: R, b: R)
+      return a.x &lt; b.x
+   end
+end
+
+local r: R = { x = 10 }
+local s: R = { x = 20 }
+if r &gt; s then
+   print("yes")
+end
+</code></pre>
+<p>This generates the following code:</p>
+<pre><code class="language-lua">local r = { x = 10 }
+local s = { x = 20 }
+if s.x &lt; r.x then
+   print("yes")
+end
+</code></pre>
+<p>This is used to implement the pseudo-metamethod <code>__is</code>, which is used to
+resolve the <code>is</code> operator. The <code>where</code> construct is syntax sugar to an
+<code>__is</code> declaration, meaning the following two constructs are equivalent:</p>
+<pre><code class="language-lua">local record MyRecord is MyInterface
+   where self.my_field == "my_record"
+end
+
+-- ...is the same as:
+
+local record MyRecord is MyInterface
+   metamethod __is: function(self: MyRecord): boolean = macroexp(self: MyRecord): boolean
+      return self.my_field == "my_record"
+   end
+end
+</code></pre>
+<p>At this time, macroexp declarations within records do not allow inference,
+so the <code>function</code> type needs to be explicitly declared when implementinga
+a field or metamethod as a <code>macroexp</code>. This requirement may be dropped in
+the future.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="behavior-rules"><a class="header" href="#behavior-rules">Behavior rules</a></h1>
+<p>This chapter describes in greater detail the various behaviors of the type system.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="type-aliasing-rules-in-teal"><a class="header" href="#type-aliasing-rules-in-teal">Type aliasing rules in Teal</a></h1>
+<h2 id="the-general-rule"><a class="header" href="#the-general-rule">The general rule</a></h2>
+<p>In Teal we can declare new types with user-defined names. These are called
+<em>nominal types</em>. These nominal types may be unique, or aliases.</p>
+<p>The <code>local type</code> syntax produces a new <em>nominal type</em>. Whenever you assign to
+it another user-defined nominal type, it becomes a <em>type alias</em>. Whenever you
+assign to it a type constructor, it becomes a new unique type. Type
+constructors are syntax constructs such as: block constructors for records,
+interfaces and enums (e.g. <code>record</code> ... <code>end</code>); function signature
+declarations with <code>function()</code>; applications of generics with <code>&lt;&gt;</code>-notation;
+declarations of array, tuple or map types with <code>{}</code>-notation; or a primitive
+type name such as <code>number</code>.</p>
+<p>Syntax such as <code>local record R</code> is a shorthand to <code>local type R = record</code>, so
+the same rules apply: it declares a new unique type.</p>
+<p>Nominal types are compared against each other <em>by name</em>, but type aliases are
+considered to be equivalent.</p>
+<pre><code class="language-lua">local record Point3D
+   x: number
+   y: number
+   z: number
+end
+
+local record Vector3D
+   x: number
+   y: number
+   z: number
+end
+
+local p: Point3D = { x = 1.0, y = 0.3, z = 2.5 }
+
+local v: Vector3D = p -- Teal compile error: Point3D is not a Vector3D
+
+local type P3D = Point3D
+
+local p2: P3D
+
+p2 = p  -- ok! P3D is a type alias type Point3D
+p = p2  -- ok! aliasing works both ways: they are effectively the same type
+</code></pre>
+<p>Nominal types are compared against non-nominal types <em>by structure</em>, so that
+you can manipulate concrete values, which have inferred types. For example,
+you can assign a plain function to a nominal function type, as long as the
+signatures are compatible, and you can assign a number literal to a nominal
+number type.</p>
+<pre><code class="language-lua">local type MyFunction = function(number): string
+
+-- f has a nominal type
+local f: MyFunction
+
+-- g is inferred a structural type: function(number): string
+local g = function(n: number): string
+   return tostring(n)
+end
+
+f = g  -- ok! structural matched against nominal
+g = f  -- ok! nominal matched against structural
+</code></pre>
+<p>You can declare structural types for functions explicitly:</p>
+<pre><code class="language-lua">local type MyFunction = function(number): string
+
+-- f has a nominal type
+local f: MyFunction
+
+-- h was explicitly given a structural function type
+local h: function(n: number): string
+
+f = h  -- ok!
+h = f  -- ok!
+</code></pre>
+<p>By design, there is no syntax in Teal for declaring structural record types.</p>
+<h2 id="some-examples"><a class="header" href="#some-examples">Some examples</a></h2>
+<p>Type aliasing only happens when declaring a new user-defined nominal type
+using an existing user-defined nominal type.</p>
+<pre><code class="language-lua">local type Record1 = record
+   x: integer
+   y: integer
+end
+
+local type Record2 = Record1
+
+local r1: Record1
+assert(r1 is Record2) -- ok!
+</code></pre>
+<p>This does not apply to primitive types. Declaring a type name with the same
+primitive type as a previous declaration is not an aliasing operation. This
+allows you to create types based on primitive types which are distinct from
+each other.</p>
+<pre><code class="language-lua">local type Temperature = number
+
+local type TemperatureAlias = Temperature
+
+local type Width = number
+
+local temp: Temperature
+
+assert(temp is TemperatureAlias)  -- ok!
+assert(temp is Width)             -- Teal compile error: temp (of type Temperature) can never be a Width
+</code></pre>
+<p>Like records, each declaration of a function type in the program source code
+represents a distinct type. The <code>function(...):...</code> syntax for type
+declaration is a type constructor.</p>
+<pre><code class="language-lua">local type Function1 = function(number): string
+
+local type Function2 = function(number): string
+
+local f1: Function1
+
+assert(f1 is Function2) -- Teal compile error: f1 (of type Function2) can never be a Function1
+</code></pre>
+<p>However, user-defined nominal names referencing those function types can be
+aliased.</p>
+<pre><code class="language-lua">local type Function1 = function(number): string
+
+local type Function3 = Function1
+
+local f1: Function1
+assert(f1 is Function3) -- ok!
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="type-variable-matching"><a class="header" href="#type-variable-matching">Type variable matching</a></h1>
+<p>When Teal type-checks a generic function call, it infers any type variables
+based on context. Type variables can appear in function arguments and return
+types, so these are matched with the information available at the call site:</p>
+<ul>
+<li>the place where the function call is made is used to infer
+type variables in return types;</li>
+<li>the values passed as arguments are used to infer type variables
+appearing in function arguments.</li>
+</ul>
+<p>For example, given a generic function with the following type:</p>
+<pre><code class="language-lua">local my_f: function&lt;T, U&gt;(T): U
+</code></pre>
+<p>...the following call will infer <code>T</code> to <code>boolean</code> and <code>U</code>
+to <code>string</code>.</p>
+<pre><code>local s: string = my_f(true)
+</code></pre>
+<p>Note that each type variable is inferred upon its first match, and return
+types are inferred first, then argument types. This means that if the type
+signature was instead this:</p>
+<pre><code class="language-lua">local my_f: function&lt;T&gt;(T): T
+</code></pre>
+<p>then the call above would fail with an error like <code>argument 1: got boolean, expected string</code>.</p>
+<p>Matching multiple type variables to types requires particular care when
+type variables with <code>is</code>-constraints are used multiple types. Consider
+the following example, which probably does not do what you want:</p>
+<pre><code class="language-lua">local interface Shape
+   area: number
+end
+
+local function largest_shape&lt;S is Shape&gt;(a: S, b: S): S
+   if a.area &gt; b.area then
+      return a
+   else
+      return b
+   end
+end
+</code></pre>
+<p>When attempting to use this with different kinds of shapes at the same time,
+we will get an error:</p>
+<pre><code class="language-lua">local record Circle is Shape
+end
+
+local record Square is Shape
+end
+
+local c: Circle = { area = 10 }
+local s: Square = { area = 20 }
+
+local l = largest_shape(c, s) -- error! argument 2: Square is not a Circle
+</code></pre>
+<p>The type variable <code>S</code> was matched to <code>c</code> first. We can instead do this:</p>
+<pre><code class="language-lua">local function largest_shape&lt;S is Shape, T is Shape&gt;(a: S, b: T): S | T
+   if a.area &gt; b.area then
+      return a
+   else
+      return b
+   end
+end
+</code></pre>
+<p>But then we have to make records that can be discriminated in a union,
+by giving their definitions <code>where</code> clauses. This is a possible solution:</p>
+<pre><code class="language-lua">-- we add a `name` to the interface
+local interface Shape
+   name: string
+   area: number
+end
+
+local function largest_shape&lt;S is Shape, T is Shape&gt;(a: S, b: T): S | T
+   if a.area &gt; b.area then
+      return a
+   else
+      return b
+   end
+end
+
+-- we add `where` clauses to Circle and Square
+local record Circle
+   is Shape
+   where self.name == "circle"
+end
+
+local record Square
+   is Shape
+   where self.name == "square"
+end
+
+-- we add the `name` fields so that the tables conform to their types;
+-- in larger programs this would be typically done in constructor functions
+local c: Circle = { area = 10, name = "circle" }
+local s: Square = { area = 20, name = "square" }
+
+local l = largest(c, s)
+</code></pre>
+<p>...which results in <code>l</code> having type <code>Circle | Square</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pragmas"><a class="header" href="#pragmas">Pragmas</a></h1>
+<p>Teal is evolving as a language. Sometimes we need to add incompatible changes
+to the language, but we don't want to break everybody's code at once. The way
+to deal with this is by adding <em>pragmatic annotations</em> (typically known in
+compiler lingo as "pragmas") that tell the compiler about how to interpret
+various minutiae of the language, in practice picking which "dialect" of the
+language to use. This lets the programmer pedal back on certain language
+changes and adopt them gradually as the existing codebase is converted to the
+new version.</p>
+<p>Let's look at a concrete example where pragmas can help us: function arity
+checks.</p>
+<h2 id="function-arity-checks"><a class="header" href="#function-arity-checks">Function arity checks</a></h2>
+<p>If you're coming from an older version of Teal, it is possible that you will
+start getting lots of errors related to numbers of arguments, such as:</p>
+<pre><code>wrong number of arguments (given 2, expects 4)
+</code></pre>
+<p>This is because, up to Teal 0.15.x, the language was lenient on the <em>arity</em> of
+function calls (the number of expressions passed as arguments in the call). It
+would just assume that any missing arguments were intended to be <code>nil</code> on
+purpose. More often than not, this is not the case, and a missing argument
+does not mean that the argument was optional, but rather that the programmer
+forgot about it (this is common when adding new arguments during a code
+refactor).</p>
+<p>Teal now features <em>optional function arguments</em>. if an argument can be
+optionally elided, you now can, or rather, have to, annotate it explicitly
+adding a <code>?</code> to its name:</p>
+<pre><code class="language-lua">local function greet(greeting: string, name?: string)
+   if name then
+      print(string.format("%s, %s!", greeting, name))
+   else
+      print(greeting .. "!")
+   end
+end
+
+greet("Hello", "Teal") --&gt; Hello, Teal!
+greet("Hello")         --&gt; Hello!
+greet() --&gt; compile error: wrong number of arguments (given 0, expects at least 1 and at most 2)
+</code></pre>
+<p>However, there are many Teal libraries out there (and Lua libraries for which
+<a href="declaration_files.html">.d.tl type declaration files</a> were written), which were
+prepared for earlier versions of Teal.</p>
+<p>The good news is that you don't have to convert all of them at once, neither
+you have to make an all-or-nothing choice whether to have or not those
+function arity checks.</p>
+<p>You can enable or disable arity checks using the <code>arity</code> pragma. Let's first
+assume we have an old library written for older versions of Teal:</p>
+<pre><code class="language-lua">-- old_library.tl
+local record old_library
+end
+
+-- no `?` annotations here, but `name` is an optional argument
+function old_library.greet(greeting: string, name: string)
+   if name then
+      print(string.format("%s, %s!", greeting, name))
+   else
+      print(greeting .. "!")
+   end
+end
+
+return old_library
+</code></pre>
+<p>Now we want to use this library with the current version of Teal, but we don't
+want to lose arity checks in our own code. We can temporarily disable arity
+checks, require the library, then re-enable them:</p>
+<pre><code class="language-lua">--#pragma arity off
+local old_library = require("old_library")
+--#pragma arity on
+
+local function add(a: number, b: number): number
+   return a + b
+end
+
+print(add(1)) -- compile error: wrong number of arguments (given 1, expects 2)
+
+old_library.greet("Hello", "Teal") --&gt; Hello, Teal!
+
+-- no compile error here, because in code loaded with `arity off`,
+-- every argument is optional:
+old_library.greet("Hello")         --&gt; Hello!
+
+-- no compile error here as well,
+-- even though this call will crash at runtime:
+old_library.greet() --&gt; runtime error: attempt to concatenate a nil value (local 'greeting')
+</code></pre>
+<p>The <code>arity</code> pragma was introduced as a way to gradually convert codebases, as
+opposed to the wholesale approach of passing <code>--feat-arity=off</code> to the
+compiler command-line or setting <code>feat_arity = "off"</code> in <code>tlconfig.lua</code>, the
+<a href="compiler_options.html">compiler options</a> file.</p>
+<h3 id="optional-arities-versus-optional-values"><a class="header" href="#optional-arities-versus-optional-values">Optional arities versus optional values</a></h3>
+<p>Note that arity checks are about the number of <em>expressions</em> used as arguments
+in function calls: it does not check whether the <em>values</em> are <code>nil</code> or not.
+In the above example, even with arity check enabled, you could still write
+<code>greet(nil, nil)</code> and that would be accepted by the compiler as valid,
+even though it would crash at runtime.</p>
+<p>Explicit checking for <code>nil</code> is a separate feature, which may be added in a
+future version of Teal. When that happens, we will definitely need a <code>pragma</code>
+to allow for gradual adoption of it!</p>
+<h2 id="what-pragmas-are-not"><a class="header" href="#what-pragmas-are-not">What pragmas are not</a></h2>
+<p>One final word about pragmas: there is no well-established definition for a
+"compiler pragma" in the literature, even though this is a common term.</p>
+<p>It's important to clarify here that Teal pragmas are not intended as
+general-purpose annotations (the kind of things you usually see with <code>@-</code>
+syntax in various other languages such as C#, Java or <code>#[]</code> in Rust). Pragmas
+here are intended as compiler directives, more akin to compiler flags (e.g.
+the <code>#pragma</code> use in C compilers).</p>
+<p>In short, our practical goal for pragmas is to allow for handling
+compatibility issues when dealing with the language evolution. That is, in a
+Teal codebase with no legacy concerns, there should be no pragmas.</p>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="current-limitations-of-union-types"><a class="header" href="#current-limitations-of-union-types">Current limitations of union types</a></h3>
+<p>In the current version, there are two main limitations regarding support
+for union types in Teal.</p>
+<p>The first one is that the <code>is</code> operator always matches a variable, not arbitrary
+expressions. This limitation is there to avoid aliasing.</p>
+<p>The second one is that Teal only accepts unions over a set of types that
+it can discriminate at runtime, so that it can generate code for the
+<code>is</code> operator properly. That means we can either only use one table
+type in a union, or, if we want to use multiple table types in a union,
+they need to be records or interfaces that were declared with a <code>where</code>
+annotation to discriminate them.</p>
+<p>This means that these unions not accepted:</p>
+<pre><code class="language-lua">local invalid1: {string} | {number}
+local invalid2: {string} | {string:string}
+local invalid3: {string} | MyRecord
+</code></pre>
+<p>However, the following union can be accepted, if we declare the record
+types with <code>where</code> annotations:</p>
+<pre><code>local interface Named
+   name: string
+end
+
+local record MyRecord is Named
+   where self.name == "MyRecord"
+end
+
+local record AnotherRecord is Named
+   where self.name == "AnotherRecord"
+end
+
+local valid: MyRecord | AnotherRecord
+</code></pre>
+<p>A <code>where</code> clause is any Teal expression that uses the identifier <code>self</code>
+at most once (if you need to use it multiple times, you can always write
+a function that implements the discriminator expression and call that
+in the <code>where</code> clause passing <code>self</code> as an argument).</p>
+<p>Note that Teal has no way of proving at compile time that the set of <code>where</code>
+clauses in the union is actually disjoint and can discriminate the values
+correctly at runtime. Like the other aspects of setting up a Lua-based
+object model, that is up to you.</p>
+<p>Another limitation on <code>is</code> checks comes up with enums, since these also
+translate into <code>type()</code> checks. This means they are indistinguishable from
+strings at runtime. So, for now these are also not accepted:</p>
+<pre><code class="language-lua">local invalid4: string | MyEnum
+local invalid5: MyEnum | AnotherEnum
+</code></pre>
+<p>This restriction on enums may be removed in the future.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="using-tl-with-lua"><a class="header" href="#using-tl-with-lua">Using tl with Lua</a></h2>
+<p>You can use tl to type-check not only Teal programs, but Lua programs too! When
+type-checking Lua files (with the .lua extension or a Lua <code>#!</code> identifier in
+the first line), the type-checker adds support for an extra type:</p>
+<ul>
+<li>unknown</li>
+</ul>
+<p>which is the type of all non-type-annotated variables. This means that in a
+Lua file you can declare untyped variables as usual:</p>
+<pre><code class="language-lua">local x -- invalid in .tl, valid but unknown in .lua
+</code></pre>
+<p>When processing .lua files, tl will report no errors involving unknown
+variables. Anything pertaining unknown variables is, well, unknown. Think of .tl
+files as the safer, "strict mode", and .lua files as the looser "lax mode".
+However, even a Lua file with no annotations whatsoever will still have a bunch
+of types: every literal value (numbers, strings, arrays, etc.) has a type.
+Variables initialized on declaration are also assumed to keep consistent types
+like in Teal. The types of the Lua standard library are also known to tl: for
+example, the compiler knows that if you run <code>table.concat</code> on a table, the only
+valid output is a string.</p>
+<p>Plus, requiring type-annotated modules from your untyped Lua program will also
+help tl catch errors: tl can check the types of calls from Lua to functions
+declared as Teal modules, and will report errors as long as the input arguments
+are not of type unknown.</p>
+<p>Having unknown variables in a Lua program is not an error, but it may hide
+errors. Running <code>tl check</code> on a Lua file will report every unknown variable in
+a separate list from errors. This allows you to see which parts of your program
+tl is helpless about and help you incrementally add type annotations to your
+code.</p>
+<p>Note that even though adding type annotations to .lua files makes it invalid
+Lua, you can still do so and load them from the Lua VM once the Teal package
+loader is installed by calling <code>tl.loader()</code>.</p>
+<p>You can also create declaration files to annotate the types of third-party Lua
+modules, including C Lua modules.
+For more information, see the <a href="declaration_files.html">declaration files</a> page.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="type-definitions-for-third-party-libraries"><a class="header" href="#type-definitions-for-third-party-libraries">Type definitions for third party libraries</a></h1>
+<p>You can create declaration files to annotate the types of third-party Lua
+modules, including C Lua modules. To do so, create a file with the .d.tl
+extension and require it as normal, i.e. <code>local lfs = require("lfs")</code>.</p>
+<p>Types defined in this module will will be used as a source of type information
+checking with <code>tl check</code>, even though the real Lua module will be loaded
+instead when requiring the module from Lua or <code>tl run</code>.</p>
+<h2 id="visibility"><a class="header" href="#visibility">Visibility</a></h2>
+<p>There are two ways to define these types:</p>
+<h3 id="composite-types"><a class="header" href="#composite-types">Composite Types</a></h3>
+<pre><code>local record MyCompositeType
+   record MyPointType
+      x: number
+      y: number
+   end
+
+   center: MyPointType
+    -- insert more stuff here
+end
+
+return MyCompositeType
+</code></pre>
+<p>This will mean that references to <code>MyPointType</code> must be qualified (or locally declared) as
+<code>MyCompositeType.MyPointType</code>.</p>
+<h3 id="global-types"><a class="header" href="#global-types">Global Types</a></h3>
+<pre><code>global record MyPointType
+   x: number
+   y: number
+end
+
+global record MyCompositeType
+   center: MyPointType
+end
+</code></pre>
+<p>These can now be used unqualified in any file that requires them.</p>
+<h4 id="global-environment-definition"><a class="header" href="#global-environment-definition">Global environment definition</a></h4>
+<p>Some customized Lua environments predefine some values into the Lua VM
+space as global variables. An example of an environment
+which presents this behavior is <a href="https://love2d.org">LÖVE</a>,
+which predefines a <code>love</code> global table containing its API. This global is
+just "there", and code written for that environment assumes it is available,
+even if you don't load it with <code>require</code>.</p>
+<p>To make the Teal compiler aware of such globals, you can define them
+inside a declaration file, and tell the compiler to load the declaration module into its own type
+checking environment, using the <code>--global-env-def</code> flag in the CLI or the
+<code>global_env_def</code> string in <code>tlconfig.lua</code>.</p>
+<p>For example, if you have a file called <code>love-example.d.tl</code> containing the
+definitions for LÖVE:</p>
+<pre><code>-- love-example.d.tl
+
+global record love
+   record graphics
+      print: function(text: string, x: number, y: number)
+   end
+end
+</code></pre>
+<p>You can put <code>global_env_def = "love-example"</code> in a <code>tlconfig.lua</code> file at
+the root of your project, and <code>tl</code> will now assume that any globals declared
+in <code>love-example.d.tl</code> are available to other modules being compiled:</p>
+<pre><code>-- tlconfig.lua
+
+return {
+   global_env_def = "love-example"
+}
+</code></pre>
+<p>Example usage:</p>
+<pre><code>-- main.tl
+
+love.graphics.print("hello!", 0, 0)
+</code></pre>
+<pre><code>$ tl check main.tl
+========================================
+Type checked main.tl
+0 errors detected
+</code></pre>
+<p>Note that when using <code>tl gen</code>, this option does not generate code for the
+global environment module, and when using <code>tl run</code> it does not execute the
+module either. This option is only meant to make the compiler aware of any
+global definitions that were already loaded into a customized Lua VM.</p>
+<h2 id="reusing-existing-declaration-files-and-contributing-new-ones"><a class="header" href="#reusing-existing-declaration-files-and-contributing-new-ones">Reusing existing declaration files (and contributing new ones!)</a></h2>
+<p>The <a href="https://github.com/teal-language/teal-types">Teal Types</a> repo contains
+declaration files for some commonly-used Lua libraries.</p>
+<p>Feel free to check it out and make your contribution!</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="the-teal-standard-library-and-lua-compatibility"><a class="header" href="#the-teal-standard-library-and-lua-compatibility">The Teal Standard Library and Lua compatibility</a></h2>
+<p>tl supports a fair subset of the Lua 5.3 standard library (even in other Lua
+versions, using <a href="https://github.com/keplerproject/lua-compat-5.3">compat-5.3</a>),
+avoiding 5.3-isms that are difficult to reproduce in other Lua implementations.</p>
+<p>It declares all entries of the standard library as <code>&lt;const&gt;</code>, and assumes that
+Lua libraries don't modify it. If your Lua environment modifies the standard
+library with incompatible behaviors, tl will be oblivious to it and you're on
+your own.</p>
+<p>The Teal compiler also supports Lua-5.3-style bitwise operators (<code>&amp;</code>, <code>|</code>, <code>~</code>,
+<code>&lt;&lt;</code>, <code>&gt;&gt;</code>) and the integer division <code>//</code> operator on all supported Lua
+versions. For Lua versions that do not support it natively, it generates code
+using the bit32 library, which is also included in compat-5.3 for Lua 5.1.</p>
+<p>You can explicitly disable the use of compat-5.3 with the <code>--skip-compat53</code>
+flag and equivalent option in <code>tlconfig.lua</code>. However, if you do so, the Lua
+code generated by your Teal program may not behave consistently across different
+target Lua versions, and differences in behavior across Lua standard libraries
+will reflect in Teal. In particular, the operator support described above may
+not work.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="compiler-options"><a class="header" href="#compiler-options">Compiler options</a></h1>
+<p><code>tl</code> supports some compiler options. These can either be specified on the command line or inside a <code>tlconfig.lua</code> file.</p>
+<h2 id="project-configuration"><a class="header" href="#project-configuration">Project configuration</a></h2>
+<p>When running <code>tl</code>, the compiler will try to read the compilation options from a file called <code>tlconfig.lua</code> inside the current working directory.</p>
+<p>Here is an example of a <code>tlconfig.lua</code> file:</p>
+<pre><code class="language-lua">return {
+    include_dir = {
+        "folder1/",
+        "folder2/"
+    },
+}
+</code></pre>
+<h2 id="list-of-compiler-options"><a class="header" href="#list-of-compiler-options">List of compiler options</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Command line option</th><th>Config key</th><th>Type</th><th>Relevant Commands</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>-l --require</code></td><td></td><td><code>{string}</code></td><td><code>run</code></td><td>Require a module prior to executing the script. This is similar in behavior to the <code>-l</code> flag in the Lua interpreter.</td></tr>
+<tr><td><code>-I --include-dir</code></td><td><code>include_dir</code></td><td><code>{string}</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Prepend this directory to the module search path.</td></tr>
+<tr><td><code>--gen-compat</code></td><td><code>gen_compat</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Generate compatibility code for targeting different Lua VM versions. See <a href="compiler_options.html#generated-code">below</a> for details.</td></tr>
+<tr><td><code>--gen-target</code></td><td><code>gen_target</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Minimum targeted Lua version for generated code. Options are <code>5.1</code>, <code>5.3</code> and <code>5.4</code>. See <a href="compiler_options.html#generated-code">below</a> for details.</td></tr>
+<tr><td><code>--keep-hashbang</code></td><td></td><td></td><td><code>gen</code></td><td>Preserve hashbang line (<code>#!</code>) at the top of file if present.</td></tr>
+<tr><td><code>-p --pretend</code></td><td></td><td></td><td><code>gen</code></td><td>Don't compile/write to any files, but type check and log what files would be written to.</td></tr>
+<tr><td><code>--wdisable</code></td><td><code>disable_warnings</code></td><td><code>{string}</code></td><td><code>check</code> <code>run</code></td><td>Disable the given warnings.</td></tr>
+<tr><td><code>--werror</code></td><td><code>warning_error</code></td><td><code>{string}</code></td><td><code>check</code> <code>run</code></td><td>Promote the given warnings to errors.</td></tr>
+<tr><td><code>--global-env-def</code></td><td><code>global_env_def</code></td><td><code>string</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Specify a definition module declaring any custom globals predefined in your Lua environment. See the <a href="declaration_files.html#global-environment-definition">declaration files</a> page for details.</td></tr>
+</tbody></table>
+</div>
+<h3 id="generated-code"><a class="header" href="#generated-code">Generated code</a></h3>
+<p>Teal is a Lua dialect that most closely resembles Lua 5.3-5.4, but it is able
+to target Lua 5.1 (including LuaJIT) and Lua 5.2 as well. The compiler attempts
+to produce code that, given an input <code>.tl</code> file, generates the same behavior
+on various Lua versions.</p>
+<p>However, there are limitations in the portability across Lua versions, and the
+options <code>--gen-target</code> and <code>--gen-compat</code> give you some control over the generated
+code.</p>
+<h4 id="target-version"><a class="header" href="#target-version">Target version</a></h4>
+<p>The configuration option <code>gen_target</code> (<code>--gen-target</code> in the CLI) allow you to
+choose what is the minimum Lua version you want to target. Valid options are
+<code>5.1</code> (for Lua 5.1 and above, including LuaJIT) and <code>5.3</code> for Lua 5.3 and above.</p>
+<p>Using <code>5.1</code>, Teal will generate compatibility code for the integer division operator,
+a compatibility forward declaration for <code>table.unpack</code> and will use the <code>bit32</code>
+library for bitwise operators.</p>
+<p>Using <code>5.3</code>, Teal will generate code using the native <code>//</code> and bitwise operators.</p>
+<p>The option <code>5.4</code> is equivalent to <code>5.3</code>, but it also allows using the <code>&lt;close&gt;</code>
+variable annotation. Since that is incompatible with other Lua versions, using
+this option requires using <code>--gen-compat=off</code>.</p>
+<p>Code generated with <code>--gen-target=5.1</code> will still run on Lua 5.3+, but not
+optimally: the native Lua 5.3+ operators have better performance and better
+precision. For example, if you are targeting Lua 5.1, the Teal code <code>x // y</code>
+will generate <code>math.floor(x / y)</code> instead.</p>
+<p>If you do not use these options, the Teal compiler will infer a default
+target implicitly.</p>
+<h4 id="which-lua-version-does-the-teal-compiler-target-by-default"><a class="header" href="#which-lua-version-does-the-teal-compiler-target-by-default">Which Lua version does the Teal compiler target by default?</a></h4>
+<p>If set explicitly via the <code>--gen-target</code> flag of the <code>tl</code> CLI (or the equivalent
+options in the programmatic API), the generated code will target the Lua
+version requested: 5.1, 5.3 or 5.4.</p>
+<p>If the code generation target is not set explicitly via <code>--gen-target</code>, Teal
+will target the Lua version most compatible with the version of the Lua VM
+under which the compiler itself is running. For example, if running under
+something that reports <code>_VERSION</code> as <code>"Lua 5.1"</code> or <code>"Lua 5.2"</code> (such as LuaJIT),
+it will generate 5.1-compatible code. If running under Lua 5.3 or greater, it
+will output code that uses 5.3 extensions.</p>
+<p>The stand-alone <code>tl</code> binaries are built using Lua 5.4, so they default to
+generating 5.3-compatible code. If you install <code>tl</code> using LuaRocks, the CLI
+will use the Lua version you use with LuaRocks, so it will default to that
+Lua's version.</p>
+<p>If you require the <code>tl</code> Lua module and use the <code>tl.loader()</code>, it will do the
+implicit version selection, picking the right choice based on the Lua version
+you're running it on.</p>
+<h4 id="compatibility-wrappers"><a class="header" href="#compatibility-wrappers">Compatibility wrappers</a></h4>
+<p>Another source of incompatibility across Lua versions is the standard library.
+This is mostly fixable via compatibility wrappers, implemented by the
+<a href="https://github.com/keplerproject/lua-compat-5.3">compat53</a> Lua library.</p>
+<p>Teal's own standard library definition as used by its type checker most
+closely resembles that of Lua 5.3+, and the compiler's code generator can
+generate code that uses compat53 in order to produce consistent behavior
+across Lua versions, at the cost of adding a dependency when running on older
+Lua versions. For Lua 5.3 and above, compat53 is never needed.</p>
+<p>To avoid forcing a dependency on Teal users running Lua 5.1, 5.2 or LuaJIT,
+especially those who take care to avoid incompatibilities in the Lua standard
+library and hence wouldn't need compat53 in their code, Teal offers three
+modes of operation for compatibility wrapper generation via the <code>gen_compat</code>
+flag (and <code>--gen-compat</code> CLI option):</p>
+<ul>
+<li><code>off</code> - you can choose to disable generating compatibility code entirely.
+When type checking, Teal will still assume the standard library is 5.3-compatible.
+If you run the Teal module on an older Lua version and use any functionality
+from the standard library that is not available on that version, you will
+get a runtime error, similar to trying to run Lua 5.3 code on an older version.</li>
+<li><code>optional</code> (<em>default</em>) - Teal will generate compatibility code which
+initializes the the compat53 library wrapping <code>require</code> with a <code>pcall</code>,
+so that it doesn't produce a failure if the library is missing. This means
+that, if compat53 is installed, you'll get the compliant standard library
+behavior when running on Lua 5.2 and below, but if compat53 is missing,
+you'll get the same behavior as described for <code>off</code> above.</li>
+<li><code>required</code> - Teal will generate compatibility code which initializes compat53
+with a plain <code>require</code>, meaning that you'll get a runtime error when loading
+the generated module from Lua if compat53 is missing. You can use this option
+if you are distributing the generated Lua code for users running different
+Lua versions and you want to ensure that your Teal code behaves the same
+way on all Lua versions, even if at the cost of an additional dependency.</li>
+</ul>
+<h3 id="global-environment-definition-1"><a class="header" href="#global-environment-definition-1">Global environment definition</a></h3>
+<p>To make the Teal compiler aware of global variables in your execution environment,
+you may pass a declaration module to the compiler using the <code>--global-env-def</code> flag
+in the CLI or the <code>global_env_def</code> string in <code>tlconfig.lua</code>.</p>
+<p>For more information, see the <a href="declaration_files.html#global-environment-definition">declaration files</a> page.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hacking-on-tl-itself"><a class="header" href="#hacking-on-tl-itself">Hacking on tl itself</a></h1>
+<p>As correctly pointed out in <a href="https://github.com/teal-language/tl/issues/51">#51</a>:</p>
+<blockquote>
+<p>Creating and testing edits to <code>tl.tl</code> can feel a bit awkward because
+changing <code>tl</code> itself requires bootstrapping from a "working" version
+of <code>tl</code>.</p>
+</blockquote>
+<h2 id="keeping-tl-working"><a class="header" href="#keeping-tl-working">Keeping tl working</a></h2>
+<p>Because of this situation, the tl repository provides a Makefile that
+conveniently runs a build and test while making sure that <code>tl.lua</code>, which
+is the file that ultimately drives the currently-running compiler, keeps
+working.</p>
+<p>So, when working on <code>tl.tl</code>, instead of running <code>tl gen tl.tl</code>, run <code>make</code>.
+This will run <code>tl gen tl.tl</code>, but it will also make a backup of <code>tl.lua</code>
+first, and it will check that the new modified version can still build itself.
+If anything goes wrong, it reverts <code>tl.lua</code> to the backup and your compiler
+still works. If the modified compiler is able to rebuild itself, then
+it will run the Busted test suite. If the Busted test suite fails, it will
+<em>not</em> revert <code>tl.lua</code>, but leave you with the buggy compiler (i.e. a <code>tl.lua</code>
+that matches the behavior of your current version of <code>tl.tl</code>).</p>
+<p>If you want to revert only the generated code back to the last committed
+state in Git but keep your changes to <code>tl.tl</code> around, you can run
+<code>git checkout tl.lua</code>.</p>
+<h2 id="avoid-circular-dependencies"><a class="header" href="#avoid-circular-dependencies">Avoid circular dependencies</a></h2>
+<p>When dealing with a bootstrapped project (a project that uses itself to run),
+one has to always be careful to not make the code itself depend on a new
+feature when implementing it, otherwise you get into a chicken-and-egg
+situation.</p>
+<p>For example, when generics were added, the code to support them had to be
+written using non-generic types, resorting to <code>any</code> and ugly casts. Once
+the tests for generics were passing, then the code of <code>tl.tl</code> itself was
+modified to use it.</p>
+<p>If you find yourself in a circular-dependency situation like this (sometimes
+it's a bug you need fixed in the compiler and the compiler needs the bug
+fixed to run correctly), the last-resort alternative is to copy the fix
+manually to <code>tl.lua</code>, stripping out the types in your new code by hand,
+then running both (you may want to save your changes in a backup commit
+before trying it, as you might accidentally overwrite your manual changes!).
+Again, this manual editing of <code>tl.lua</code> shouldn't generally be necessary
+if you take care to not depend on work-in-progress features.</p>
+<h2 id="sending-code-contributions"><a class="header" href="#sending-code-contributions">Sending code contributions</a></h2>
+<p>When submitting a pull request, make sure you include in your commits both the
+changes to <code>tl.tl</code> and <code>tl.lua</code>. They should match of course (the <code>tl.lua</code>
+should be the product of compiling <code>tl.tl</code>). In general, Git repositories do
+not contain generated files, but we keep both in the repository precisely to
+avoid the chicken-and-egg bootstrapping situation (if we didn't, one would
+have to have a previous <code>tl</code> installation already in order to run <code>tl</code> from a
+Git repo clone).</p>
+<p>When sending a PR that adds a new feature or fixes a bug, please add one or more
+relevant tests to the Busted test suite under <code>spec/</code>. Adding tests is important
+to demonstrate that the PR works and help future maintenance of the project,
+as it will check automatically that the change introduced in the PR will keep
+working in the future as other changes are made to the project. For bug fixes,
+the ideal test is a regression test: a test that would fail when running with
+the unmodified version of the compiler, but passes when running the corrected
+compiler.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="the-grammar-of-teal"><a class="header" href="#the-grammar-of-teal">The Grammar of Teal</a></h1>
+<p>Here is the complete syntax of Teal in extended BNF, based on the Lua 5.4
+grammar. Lines starting with <code>+</code> are existing lines from the Lua grammar
+with additions; lines marked with <code>*</code> are entirely new.</p>
+<p>As usual in extended BNF, <code>{A}</code> means 0 or more <code>A</code>s, and <code>[A]</code> means an
+optional <code>A</code>. For a description of the terminals Name, Numeral, and
+LiteralString, see <a href="https://www.lua.org/manual/5.3/manual.html#3.1">Section 3.1 of the Lua 5.3 Reference
+Manual</a>. For operator
+precedence, see below.</p>
+<pre><code>   chunk ::= block
+
+   block ::= {stat} [retstat]
+
+   stat ::=  ‘;’ |
+       varlist ‘=’ explist |
+       functioncall |
+       label |
+       ‘break’ |
+       ‘goto’ Name |
+       ‘do’ block ‘end’ |
+       ‘while’ exp ‘do’ block ‘end’ |
+       ‘repeat’ block ‘until’ exp |
+       ‘if’ exp ‘then’ block {‘elseif’ exp ‘then’ block} [‘else’ block] ‘end’ |
+       ‘for’ Name ‘=’ exp ‘,’ exp [‘,’ exp] ‘do’ block ‘end’ |
+       ‘for’ namelist ‘in’ explist ‘do’ block ‘end’ |
+       ‘function’ funcname funcbody |
++      ‘local’ attnamelist [‘:’ typelist] [‘=’ explist] |
+       ‘local’ ‘function’ Name funcbody |
+*      ‘local’ ‘record’ Name recordbody |
+*      ‘local’ ‘interface’ Name recordbody |
+*      ‘local’ ‘enum’ Name enumbody |
+*      ‘local’ ‘type’ Name ‘=’ newtype |
+*      ‘global’ attnamelist ‘:’ typelist [‘=’ explist] |
+*      ‘global’ attnamelist ‘=’ explist |
+*      ‘global’ ‘function’ Name funcbody |
+*      ‘global’ ‘record’ Name recordbody |
+*      ‘global’ ‘interface’ Name recordbody |
+*      ‘global’ ‘enum’ Name enumbody |
+*      ‘global’ ‘type’ Name [‘=’ newtype]
+
+   attnamelist ::=  Name [attrib] {‘,’ Name [attrib]}
+
+   attrib ::= ‘&lt;’ Name ‘&gt;’
+
+   retstat ::= ‘return’ [explist] [‘;’]
+
+   label ::= ‘::’ Name ‘::’
+
++  funcname ::= Name {‘.’ Name} ‘:’ Name | Name {‘.’ Name} ‘.’ Name
+
+   varlist ::= var {‘,’ var}
+
+   var ::=  Name | prefixexp ‘[’ exp ‘]’ | prefixexp ‘.’ Name
+
+   namelist ::= Name {‘,’ Name}
+
+   explist ::= exp {‘,’ exp}
+
+   exp ::=  ‘nil’ | ‘false’ | ‘true’ | Numeral | LiteralString | ‘...’ | functiondef |
+       prefixexp | tableconstructor | exp binop exp | unop exp |
+*      exp ‘as’ type | exp ‘as’ ‘(’ typelist ‘)’ | Name ‘is’ type
+
+   prefixexp ::= var | functioncall | ‘(’ exp ‘)’
+
+   functioncall ::=  prefixexp args | prefixexp ‘:’ Name args
+
+   args ::=  ‘(’ [explist] ‘)’ | tableconstructor | LiteralString
+
+   functiondef ::= ‘function’ funcbody
+
++  funcbody ::= [typeargs] ‘(’ [parlist] ‘)’ [‘:’ retlist] block ‘end’
+
++  parlist ::= parnamelist [‘,’ ‘...’ [‘:’ type]] | ‘...’ [‘:’ type]
+
+   tableconstructor ::= ‘{’ [fieldlist] ‘}’
+
+   fieldlist ::= field {fieldsep field} [fieldsep]
+
+   field ::= ‘[’ exp ‘]’ ‘=’ exp |
++      Name [‘:’ type] ‘=’ exp |
+       exp
+
+   fieldsep ::= ‘,’ | ‘;’
+
+   binop ::=  ‘+’ | ‘-’ | ‘*’ | ‘/’ | ‘//’ | ‘^’ | ‘%’ |
+       ‘&amp;’ | ‘~’ | ‘|’ | ‘&gt;&gt;’ | ‘&lt;&lt;’ | ‘..’ |
+       ‘&lt;’ | ‘&lt;=’ | ‘&gt;’ | ‘&gt;=’ | ‘==’ | ‘~=’ |
+       ‘and’ | ‘or’
+
+   unop ::= ‘-’ | ‘not’ | ‘#’ | ‘~’
+
+*  type ::= ‘(’ type ‘)’ | basetype {‘|’ basetype}
+
+*  nominal ::= Name {{‘.’ Name }} [typeargs]
+
+*  basetype ::= ‘string’ | ‘boolean’ | ‘nil’ | ‘number’ |
+*      ‘{’ type {',' type} ‘}’ | ‘{’ type ‘:’ type ‘}’ | functiontype
+*      | nominal
+
+*  typelist ::= type {‘,’ type}
+
+*  retlist ::= ‘(’ [typelist] [‘...’] ‘)’ | typelist [‘...’]
+
+*  typeargs ::= ‘&lt;’ Name {‘,’ Name } ‘&gt;’
+
+*  newtype ::= ‘record’ recordbody | ‘enum’ enumbody | type
+*      | ‘require’ ‘(’ LiteralString ‘)’ {‘.’ Name }
+
+*  interfacelist ::= nominal {‘,’ nominal} |
+*      ‘{’ type ‘}’ {‘,’ nominal}
+
+*  recordbody ::= [typeargs] [‘is’ interfacelist]
+*      [‘where’ exp] {recordentry} ‘end’
+
+*  recordentry ::= ‘userdata’ |
+*      ‘type’ Name ‘=’ newtype | [‘metamethod’] recordkey ‘:’ type |
+*      ‘record’ Name recordbody | ‘enum’ Name enumbody
+
+*  recordkey ::= Name | ‘[’ LiteralString ‘]’
+
+*  enumbody ::= {LiteralString} ‘end’
+
+*  functiontype ::= ‘function’ [typeargs] ‘(’ partypelist ‘)’ [‘:’ retlist]
+
+*  partypelist ::= partype {‘,’ partype}
+
+*  partype ::= Name [‘?’] ‘:’ type | [‘?’] type
+
+*  parnamelist ::= parname {‘,’ parname}
+
+*  parname ::= Name [‘?’] [‘:’ type]
+</code></pre>
+<h2 id="operator-precedence"><a class="header" href="#operator-precedence">Operator precedence</a></h2>
+<p>Operator precedence in Teal follows the table below, from lower to higher priority:</p>
+<pre><code>     or
+     and
+     is
+     &lt;     &gt;     &lt;=    &gt;=    ~=    ==
+     |
+     ~
+     &amp;
+     &lt;&lt;    &gt;&gt;
+     ..
+     +     -
+     *     /     //    %
+     unary operators (not   #     -     ~)
+     ^
+     as
+</code></pre>
+<p>As usual, you can use parentheses to change the precedences of an expression.
+The concatenation (<code>..</code>) and exponentiation (<code>^</code>) operators are right
+associative. All other binary operators are left associative.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="other-related-projects"><a class="header" href="#other-related-projects">Other related projects</a></h2>
+<p>Here is a short overview of other projects related to Lua and types, prompted by <a href="https://github.com/teal-language/tl/issues/24">this question at Github</a>:</p>
+<ul>
+<li><a href="https://github.com/andremm/typedlua">Typed Lua</a> was a research project started as @andremm's PhD thesis at PUC-Rio, co-advised by @mascarenhas which also got contributions from some students over time. It was a big exploration of optional typing for Lua and lots of lessons were learned there (see the various published papers!). The focus being on research results, the implementation itself for most of the time remained more of a proof-of-concept of this research, rather than a practical tool. The original developers moved on to other things, and the repo hasn't had updates in a year.</li>
+<li><a href="https://github.com/titan-lang/titan">Titan</a> started as a community project between myself (maintainer of <a href="https://luarocks.org">LuaRocks</a> and a PUC-Rio alumnus), the Typed Lua devs mentioned above, plus grad students at PUC-Rio @hugomg and @gligneul who at the time were studying optional typing and compilation techniques. The idea was to join forces and build something that would make everyone happy: I wanted a Lua for programming-in-the-large, the Typed Lua people wanted a typed dialect of Lua, and grad students wanted a high-performance Lua. The "companion language" concept seemed to fit the bill, being a "Lua-ish language you'd use instead of falling back to C or doing contortions to please the JIT compiler gods".</li>
+<li><a href="https://github.com/pallene-lang/pallene">Pallene</a> started as a fork of Titan because, as you can guess, design-by-committee is challenging, especially when people in the committee have different goals. :) Since grad students work under a deadline to produce results, the ideal situation was to have the academic side of Titan fork into its own project, which is currently active, healthy and continues with the evolution of the "companion language" concept. Titan went dormant as the others moved on: and as far as I'm concerned, Titan is now dead but I hope it will prove to have been a worthwhile kickstarting effort once Pallene starts to bear fruit.</li>
+</ul>
+<p>So <strong>tl;dr:</strong>: as of 2020, Typed Lua and Titan aren't active, Pallene is a project aiming to generate native-code modules for use with the Lua interpreter, and Teal is a dialect of Lua plus types implemented as a transpiler which outputs Lua.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

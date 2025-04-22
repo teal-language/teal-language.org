@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Interfaces - The Teal Programming Language</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Teal Programming Language</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="interfaces"><a class="header" href="#interfaces">Interfaces</a></h2>
+<p>Interfaces are, in essence, abstract records.</p>
+<p>A concrete record is a type declared with <code>record</code>, which can be used
+both as a Lua table and as a type. In object-oriented terms, the record
+itself works as class whose fields work as class attributes,
+while other tables declared with the record type are objects whose
+fields are object atributes. For example:</p>
+<pre><code class="language-lua">local record MyConcreteRecord
+   a: string
+   x: integer
+   y: integer
+end
+
+MyConcreteRecord.a = "this works"
+
+local obj: MyConcreteRecord = { x = 10, y = 20 } -- this works too
+</code></pre>
+<p>An interface is abstract. It can declare fields, including those of
+<code>function</code> type, but they cannot hold concrete values on their own.
+Instances of an interface can hold values.</p>
+<pre><code class="language-lua">local interface MyAbstractInterface
+   a: string
+   x: integer
+   y: integer
+   my_func: function(self, integer)
+   another_func: function(self, integer, self)
+end
+
+MyAbstractInterface.a = "this doesn't work" -- error!
+
+local obj: MyAbstractInterface = { x = 10, y = 20 } -- this works
+
+-- error! this doesn't work
+function MyAbstractInterface:my_func(n: integer)
+end
+
+-- however, this works
+obj.my_func = function(self: MyAbstractInterface, n: integer)
+end
+</code></pre>
+<p>What is most useful about interfaces is that records can inherit
+interfaces, using <code>is</code>:</p>
+<pre><code class="language-lua">local record MyRecord is MyAbstractInterface
+   b: string
+end
+
+local r: MyRecord = {}
+r.b = "this works"
+r.a = "this works too because 'a' comes from MyAbstractInterface"
+</code></pre>
+<p>Note that the definition of <code>my_func</code> used <code>self</code> as a type name. <code>self</code>
+is a valid type that can be used when declaring arguments in functions
+declared in interfaces and records. When a record is declared to be a subtype
+of an interface using <code>is</code>, any function arguments using <code>self</code> in the parent
+interface type will then resolve to the child record's type. The type signature
+of <code>another_func</code> makes it even more evident:</p>
+<pre><code class="language-lua">-- the following function complies to the type declared for `another_func`
+-- in MyAbstractInterface, because MyRecord is the `self` type in this context
+function MyRecord:another_func(n: integer, another: MyRecord)
+   print(n + self.x, another.b)
+end
+</code></pre>
+<p>Records and interfaces can inherit from multiple interfaces,
+as long as their component parts are compatible (that is, as long
+as the parent interfaces don't declare fields with the same name
+but different types). Here is an example showing how incompatible
+fields need to be stated explicitly, but compatible fields can be
+inherited:</p>
+<pre><code class="language-lua">local interface Shape
+   x: number
+   y: number
+end
+
+local interface Colorful
+   r: integer
+   g: integer
+   b: integer
+end
+
+local interface SecondPoint
+   x2: number
+   y2: number
+   get_distance: function(self): number
+end
+
+local record Line is Shape, SecondPoint
+end
+
+local record Square is Shape, SecondPoint, Colorful
+   get_area: function(self): number
+end
+
+--[[
+-- this produces a record with these fields,
+-- but Square also satisfies `Square is Shape`,
+-- `Square is SecondPoint`, `Square is Colorful`
+local record Square
+   x: number
+   y: number
+   x2: number
+   y2: number
+   get_distance: function(self): number
+   r: integer
+   g: integer
+   b: integer
+   get_area: function(self): number
+end
+]]
+</code></pre>
+<p>Keep in mind that this refers strictly to subtyping of interfaces, not
+inheritance of implementations. For that reason, records cannot inherit from
+other records; that is, you cannot use <code>is</code> to do <code>local record MyRecord is AnotherRecord</code>. You can define function fields in your interfaces and those
+definitions will be inherited (as in the <code>get_distance</code> and <code>get_area</code>
+examples above), but you need to ensure that the actual implementations of
+these functions are resolved at runtime the same way as they would do in Lua,
+most likely using metatables to perform implementation inheritance. Teal
+does not implement a class/object model of its own, as it aims to be compatible
+with the multiple class/object models that exist in the Lua ecosystem.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="records.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="generics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="records.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="generics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

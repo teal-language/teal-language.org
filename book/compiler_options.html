@@ -1,0 +1,330 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Compiler options - The Teal Programming Language</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Teal Programming Language</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="compiler-options"><a class="header" href="#compiler-options">Compiler options</a></h1>
+<p><code>tl</code> supports some compiler options. These can either be specified on the command line or inside a <code>tlconfig.lua</code> file.</p>
+<h2 id="project-configuration"><a class="header" href="#project-configuration">Project configuration</a></h2>
+<p>When running <code>tl</code>, the compiler will try to read the compilation options from a file called <code>tlconfig.lua</code> inside the current working directory.</p>
+<p>Here is an example of a <code>tlconfig.lua</code> file:</p>
+<pre><code class="language-lua">return {
+    include_dir = {
+        "folder1/",
+        "folder2/"
+    },
+}
+</code></pre>
+<h2 id="list-of-compiler-options"><a class="header" href="#list-of-compiler-options">List of compiler options</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Command line option</th><th>Config key</th><th>Type</th><th>Relevant Commands</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>-l --require</code></td><td></td><td><code>{string}</code></td><td><code>run</code></td><td>Require a module prior to executing the script. This is similar in behavior to the <code>-l</code> flag in the Lua interpreter.</td></tr>
+<tr><td><code>-I --include-dir</code></td><td><code>include_dir</code></td><td><code>{string}</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Prepend this directory to the module search path.</td></tr>
+<tr><td><code>--gen-compat</code></td><td><code>gen_compat</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Generate compatibility code for targeting different Lua VM versions. See <a href="#generated-code">below</a> for details.</td></tr>
+<tr><td><code>--gen-target</code></td><td><code>gen_target</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Minimum targeted Lua version for generated code. Options are <code>5.1</code>, <code>5.3</code> and <code>5.4</code>. See <a href="#generated-code">below</a> for details.</td></tr>
+<tr><td><code>--keep-hashbang</code></td><td></td><td></td><td><code>gen</code></td><td>Preserve hashbang line (<code>#!</code>) at the top of file if present.</td></tr>
+<tr><td><code>-p --pretend</code></td><td></td><td></td><td><code>gen</code></td><td>Don't compile/write to any files, but type check and log what files would be written to.</td></tr>
+<tr><td><code>--wdisable</code></td><td><code>disable_warnings</code></td><td><code>{string}</code></td><td><code>check</code> <code>run</code></td><td>Disable the given warnings.</td></tr>
+<tr><td><code>--werror</code></td><td><code>warning_error</code></td><td><code>{string}</code></td><td><code>check</code> <code>run</code></td><td>Promote the given warnings to errors.</td></tr>
+<tr><td><code>--global-env-def</code></td><td><code>global_env_def</code></td><td><code>string</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Specify a definition module declaring any custom globals predefined in your Lua environment. See the <a href="declaration_files.html#global-environment-definition">declaration files</a> page for details.</td></tr>
+</tbody></table>
+</div>
+<h3 id="generated-code"><a class="header" href="#generated-code">Generated code</a></h3>
+<p>Teal is a Lua dialect that most closely resembles Lua 5.3-5.4, but it is able
+to target Lua 5.1 (including LuaJIT) and Lua 5.2 as well. The compiler attempts
+to produce code that, given an input <code>.tl</code> file, generates the same behavior
+on various Lua versions.</p>
+<p>However, there are limitations in the portability across Lua versions, and the
+options <code>--gen-target</code> and <code>--gen-compat</code> give you some control over the generated
+code.</p>
+<h4 id="target-version"><a class="header" href="#target-version">Target version</a></h4>
+<p>The configuration option <code>gen_target</code> (<code>--gen-target</code> in the CLI) allow you to
+choose what is the minimum Lua version you want to target. Valid options are
+<code>5.1</code> (for Lua 5.1 and above, including LuaJIT) and <code>5.3</code> for Lua 5.3 and above.</p>
+<p>Using <code>5.1</code>, Teal will generate compatibility code for the integer division operator,
+a compatibility forward declaration for <code>table.unpack</code> and will use the <code>bit32</code>
+library for bitwise operators.</p>
+<p>Using <code>5.3</code>, Teal will generate code using the native <code>//</code> and bitwise operators.</p>
+<p>The option <code>5.4</code> is equivalent to <code>5.3</code>, but it also allows using the <code>&lt;close&gt;</code>
+variable annotation. Since that is incompatible with other Lua versions, using
+this option requires using <code>--gen-compat=off</code>.</p>
+<p>Code generated with <code>--gen-target=5.1</code> will still run on Lua 5.3+, but not
+optimally: the native Lua 5.3+ operators have better performance and better
+precision. For example, if you are targeting Lua 5.1, the Teal code <code>x // y</code>
+will generate <code>math.floor(x / y)</code> instead.</p>
+<p>If you do not use these options, the Teal compiler will infer a default
+target implicitly.</p>
+<h4 id="which-lua-version-does-the-teal-compiler-target-by-default"><a class="header" href="#which-lua-version-does-the-teal-compiler-target-by-default">Which Lua version does the Teal compiler target by default?</a></h4>
+<p>If set explicitly via the <code>--gen-target</code> flag of the <code>tl</code> CLI (or the equivalent
+options in the programmatic API), the generated code will target the Lua
+version requested: 5.1, 5.3 or 5.4.</p>
+<p>If the code generation target is not set explicitly via <code>--gen-target</code>, Teal
+will target the Lua version most compatible with the version of the Lua VM
+under which the compiler itself is running. For example, if running under
+something that reports <code>_VERSION</code> as <code>"Lua 5.1"</code> or <code>"Lua 5.2"</code> (such as LuaJIT),
+it will generate 5.1-compatible code. If running under Lua 5.3 or greater, it
+will output code that uses 5.3 extensions.</p>
+<p>The stand-alone <code>tl</code> binaries are built using Lua 5.4, so they default to
+generating 5.3-compatible code. If you install <code>tl</code> using LuaRocks, the CLI
+will use the Lua version you use with LuaRocks, so it will default to that
+Lua's version.</p>
+<p>If you require the <code>tl</code> Lua module and use the <code>tl.loader()</code>, it will do the
+implicit version selection, picking the right choice based on the Lua version
+you're running it on.</p>
+<h4 id="compatibility-wrappers"><a class="header" href="#compatibility-wrappers">Compatibility wrappers</a></h4>
+<p>Another source of incompatibility across Lua versions is the standard library.
+This is mostly fixable via compatibility wrappers, implemented by the
+<a href="https://github.com/keplerproject/lua-compat-5.3">compat53</a> Lua library.</p>
+<p>Teal's own standard library definition as used by its type checker most
+closely resembles that of Lua 5.3+, and the compiler's code generator can
+generate code that uses compat53 in order to produce consistent behavior
+across Lua versions, at the cost of adding a dependency when running on older
+Lua versions. For Lua 5.3 and above, compat53 is never needed.</p>
+<p>To avoid forcing a dependency on Teal users running Lua 5.1, 5.2 or LuaJIT,
+especially those who take care to avoid incompatibilities in the Lua standard
+library and hence wouldn't need compat53 in their code, Teal offers three
+modes of operation for compatibility wrapper generation via the <code>gen_compat</code>
+flag (and <code>--gen-compat</code> CLI option):</p>
+<ul>
+<li><code>off</code> - you can choose to disable generating compatibility code entirely.
+When type checking, Teal will still assume the standard library is 5.3-compatible.
+If you run the Teal module on an older Lua version and use any functionality
+from the standard library that is not available on that version, you will
+get a runtime error, similar to trying to run Lua 5.3 code on an older version.</li>
+<li><code>optional</code> (<em>default</em>) - Teal will generate compatibility code which
+initializes the the compat53 library wrapping <code>require</code> with a <code>pcall</code>,
+so that it doesn't produce a failure if the library is missing. This means
+that, if compat53 is installed, you'll get the compliant standard library
+behavior when running on Lua 5.2 and below, but if compat53 is missing,
+you'll get the same behavior as described for <code>off</code> above.</li>
+<li><code>required</code> - Teal will generate compatibility code which initializes compat53
+with a plain <code>require</code>, meaning that you'll get a runtime error when loading
+the generated module from Lua if compat53 is missing. You can use this option
+if you are distributing the generated Lua code for users running different
+Lua versions and you want to ensure that your Teal code behaves the same
+way on all Lua versions, even if at the cost of an additional dependency.</li>
+</ul>
+<h3 id="global-environment-definition"><a class="header" href="#global-environment-definition">Global environment definition</a></h3>
+<p>To make the Teal compiler aware of global variables in your execution environment,
+you may pass a declaration module to the compiler using the <code>--global-env-def</code> flag
+in the CLI or the <code>global_env_def</code> string in <code>tlconfig.lua</code>.</p>
+<p>For more information, see the <a href="declaration_files.html#global-environment-definition">declaration files</a> page.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="teal_standard_library_and_lua_compatibility.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="developing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="teal_standard_library_and_lua_compatibility.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="developing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

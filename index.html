@@ -1,0 +1,444 @@
+<!doctype html>
+<html>
+<head>
+<title>Teal</title>
+<link href="book/fonts/fonts.css" rel="stylesheet">
+<script src="fengari-web.js" type="text/javascript"></script>
+<script type="application/teal">
+-- Yes, this is really the code that is rendering the site
+-- background animation, compiled to Teal on the fly!
+
+global interface Element
+   width: number
+   height: number
+   clientWidth: number
+   clientHeight: number
+   offsetWidth: number
+   offsetHeight: number
+end
+
+global interface Canvas is Element
+   enum Context2DIdentifier
+      "2d"
+   end
+   
+   interface Context2D
+      arc: function(self, cx: number, cy: number, radius: number,
+                    radfrom: number, radto: number, clockwise?: boolean)
+      beginPath: function(self)
+      clearRect: function(self, x1: number, y1: number, x2: number, y2: number)
+      lineTo: function(self, x: number, y: number)
+      moveTo: function(self, x: number, y: number)
+      stroke: function(self)
+      strokeStyle: string
+      lineWidth: number
+   end
+
+   getContext: function(self, ctx: Context2DIdentifier): Context2D
+end
+
+global record JavaScriptEnv
+   record Document
+      getElementById: function(self, string): Element
+   end
+   
+   record Window
+      setTimeout: function(self, callback: function():(), delay: number)
+      addEventListener: function(self, event: string, callback: function():())
+   end
+   
+   record Global
+      document: Document
+      window: Window
+   end
+
+   global: Global
+end
+
+global js: JavaScriptEnv
+
+local document = js.global.document
+local window = js.global.window
+
+local function sleep(delay: number)
+   local co = assert(coroutine.running())
+   window:setTimeout(function()
+      assert(coroutine.resume(co))
+   end, delay * 1000)
+   coroutine.yield()
+end
+
+local function deg2rad(deg: number): number
+   return deg * 0.017453292519943 -- deg / 360 * 2 * math.pi
+end
+
+local function animate_circle(ctx: Canvas.Context2D, cx: number, cy: number, cr: number)
+   local steps = 40
+   local dstep = 360 / steps
+   for i = 0, 359, dstep do
+      ctx:beginPath()
+      ctx:arc(cx, cy, cr, deg2rad(i), deg2rad(i+(dstep / 2)))
+      ctx:stroke()
+      sleep(0.1)
+   end
+end
+
+local function animate_line(ctx: Canvas.Context2D, sx: number, sy: number, dx: number, dy: number)
+   local steps = 5
+   local xstep = (dx - sx) / steps
+   local ystep = (dy - sy) / steps
+   local x, y = sx, sy
+   for i = 1, steps do
+      ctx:beginPath()
+      ctx:moveTo(x, y)
+      x = x + (xstep / 2)
+      y = y + (ystep / 2)
+      ctx:lineTo(x, y)
+      x = x + (xstep / 2)
+      y = y + (ystep / 2)
+      ctx:stroke()
+      sleep(0.1)
+   end
+end
+
+local logos_done = false
+
+local function reset_canvas(canvas: Canvas)
+   canvas.width = canvas.clientWidth
+   canvas.height = canvas.clientHeight
+   local ctx = canvas:getContext("2d")
+   ctx.strokeStyle = "#00e8e8"
+   ctx.lineWidth = 0.5
+   ctx:clearRect(0, 0, canvas.width, canvas.height)
+end
+
+local function draw_logos(ctx: Canvas.Context2D, xarea: number, yarea: number)
+   for i = 1, 100 do
+      local cx: number = math.random(math.floor(xarea))
+      local cy: number = math.random(math.floor(yarea))
+      local cr: number = math.random(200) + 10
+   
+      animate_circle(ctx, cx, cy, cr)
+   
+      cy = cy - (cr * 0.05)
+      cx = cx + (cr * 0.05)
+      local hw = cr * 0.50
+      local hs = cr / 12
+      animate_line(ctx, cx, cy - hw, cx + hw, cy - hw)
+      animate_line(ctx, cx + hw, cy - hw, cx + hw, cy)
+      animate_line(ctx, cx + hw, cy, cx, cy)
+      animate_line(ctx, cx, cy, cx, cy - hw)
+   end
+   logos_done = true
+end
+
+local function main()
+   local canvas = document:getElementById("background") as Canvas
+   local ctx = canvas:getContext("2d")
+
+   reset_canvas(canvas)
+
+   window:addEventListener("resize", function()
+      reset_canvas(canvas)
+      if logos_done then
+         logos_done = false
+         draw_logos(ctx, canvas.width, canvas.height)
+      end
+   end)
+
+   draw_logos(ctx, canvas.width, canvas.height)
+end
+
+coroutine.wrap(main)()
+</script>
+<script src="teal.js" type="text/javascript" async></script>
+
+<style>
+html {
+   scroll-behavior: smooth;
+   height: 100%;
+}
+
+body {
+   font-family: "Open Sans", "DejaVu Sans", "Bitstream Vera Sans", sans;
+   font-weight: 300;
+   background-color: #ffffff;
+   margin: 0px;
+   height: 100%;
+}
+
+h1 {
+   font-weight: 400;
+}
+
+div#top-menu {
+   background: linear-gradient(#ccf0f0ff 0%, #bbf0f0bb 40%, #ddffff88 80%, #ffffff00 100%);
+   position: fixed;
+   top: 0px;
+   width: 100%;
+   min-height: 4em;
+   display: flex;
+   flex-direction: row;
+}
+
+div#top-menu div.hspacer {
+   min-height: 100%;
+   flex-grow: 1;
+}
+
+ul#top-menu-list {
+   padding: 1em;
+   margin: 0px;
+   list-style: none;
+}
+
+ul#top-menu-list li {
+   display: inline;
+}
+
+ul#top-menu-list li + li::before {
+   content: " | ";
+}
+
+ul#top-menu-list li a {
+   color: #000000;
+   text-decoration: none;
+}
+
+ul#top-menu-list li a:hover {
+   color: #008080;
+   text-decoration: underline;
+}
+
+a {
+   color: #008080;
+}
+
+a:hover {
+   color: #30a0a0;
+}
+
+a#visited {
+   color: #308080;
+}
+
+div#above-the-fold {
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+   flex-grow: 2;
+}
+
+.menu {
+   width: 100%;
+   min-height: 3em;
+}
+
+.vspacer {
+   width: 100%;
+   flex-grow: 1;
+}
+
+img#teal-logo {
+   height: 50%;
+   text-align: center;
+}
+
+h1#teal-title {
+   text-align: center;
+}
+
+div#below-the-fold {
+   padding-top: 5em;
+   padding-left: 25%;
+   padding-right: 25%;
+   margin: 2em;
+}
+
+.sections h2 {
+   color: #008080;
+   font-weight: 400;
+   padding-top: 3em;
+}
+
+.sections p {
+   padding-top: 0.5em;
+   padding-bottom: 0.5em;
+   line-height: 1.5;
+}
+
+.teal-marker {
+   background-color: #00e0e0;
+}
+
+tt {
+   background-color: #c0e0e0;
+   padding-top: 0.1em;
+   padding-bottom: 0.1em;
+   padding-left: 0.2em;
+   padding-right: 0.2em;
+   font-size: 120%;
+   border-radius: 0.3em;
+}
+
+pre.teal-code {
+   background-color: #d0f0f0;
+   padding: 1em;
+   border-radius: 1em;
+}
+
+span.teal {
+   color: #007070;
+   text-shadow: 0 0 5px #00ffff80;
+   font-weight: bold;
+}
+
+pre.shell-code {
+   background-color: #d0f0f0;
+   padding: 1em;
+   border-radius: 1em;
+}
+
+.bottom-spacer {
+   height: 10em;
+}
+
+canvas#background {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   z-index: -1;
+}
+
+</style>
+</head>
+<body>
+<canvas id="background"></canvas>
+<div id="top-menu">
+<div class="hspacer"></div>
+<ul id="top-menu-list">
+<li><a href="#about">about</a></li>
+<li><a href="#playground">play</a></li>
+<li><a href="#download">download</a></li>
+<li><a href="#documentation">docs</a></li>
+<li><a href="#community">community</a></li>
+</ul>
+</div>
+
+<div id="above-the-fold">
+<div class="menu"></div>
+<div class="vspacer"></div>
+<img id="teal-logo" src="img/teal.svg"><br/>
+<h1 id="teal-title">The <span class="teal-marker">Teal</span> programming language</h1>
+<div class="vspacer"></div>
+</div>
+
+<div id="below-the-fold">
+<div class="sections">
+
+<!---------------------------------------------------------------------------->
+
+<a name="about"></a>
+<h2>About Teal</h2>
+<p>
+Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>.
+It extends Lua with type annotations, allowing you to specify arrays, maps and records,
+as well as interfaces, union types and generics.
+</p>
+<p>
+It aims to fill a niche similar to that of TypeScript in the JavaScript world,
+but adhering to Lua's spirit of minimalism, portability and embeddability.
+</p>
+<p>
+Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
+which compiles <tt>.tl</tt> source code into <tt>.lua</tt> files.
+</p>
+
+<!---------------------------------------------------------------------------->
+
+<a name="playground"></a>
+<h2>A taste of Teal</h2>
+<p>
+Here is a quick taste of what Teal code looks like:
+</p>
+<pre class="teal-code">
+<b>local function</b> add(a: <span class="teal">number</span>, b: <span class="teal">number</span>): <span class="teal">number</span>
+   <b>return</b> a + b
+<b>end</b>
+
+<b>local</b> s = add(1, 2)
+print(s)
+</pre>
+<p>
+...or check out this page's source code!
+</p>
+<p>
+You can also play with the Teal compiler right from your browser,
+using the <a href="https://teal-playground.netlify.app/" target="_blank">Teal Playground</a>.
+</p>
+
+<!---------------------------------------------------------------------------->
+
+<a name="download"></a>
+<h2>Install Teal</h2>
+<p>
+If you're using <a href="https://luarocks.org">LuaRocks</a>, you can install the compiler with:
+</p>
+<pre class="shell-code">
+luarocks install tl
+</pre>
+<p>
+You can also find <a href="https://github.com/teal-language/tl/releases">pre-compiled
+binaries</a> for Linux and Windows.</p>
+<p>
+To build larger projects, you probably won't want to run <tt>tl</tt> on each
+file individually. We recommend using <a href="https://github.com/teal-language/cyan">Cyan</a>,
+the build tool designed for Teal.
+</p>
+<p>
+You can also install <a href="https://github.com/teal-language/vscode-teal/">vscode-teal</a> for
+Visual Studio Code integration, <a href="https://github.com/teal-language/teal-language-server/">teal-language-server</a>
+for NeoVim and others, and <a href="https://github.com/teal-language/awesome-teal">more</a>.
+</p>
+
+<!---------------------------------------------------------------------------->
+
+<a name="documentation"></a>
+<h2>Documentation</h2>
+<p>
+You can browse the Teal documentation <a href="./book/index.html">online</a>.
+</p>
+
+<!---------------------------------------------------------------------------->
+
+<a name="community"></a>
+<h2>Community</h2>
+<p>
+Development happens on <a href="https://github.com/teal-language">GitHub</a>.
+</p>
+<p>
+We have a <a href="https://github.com/teal-language/tl/discussions">community forum</a> hosted by GitHub.
+You can also chat with us via Matrix at <a href="https://matrix.to/#/#teal-language_community:gitter.im">#teal-language_community:gitter.im</a>.
+</p>
+<p>
+Teal is a project started by <a href="https://hisham.hm">Hisham Muhammad</a>,
+developed by a <a href="https://github.com/teal-language/tl/graphs/contributors">growing number of contributors</a>
+and is written using Teal itself!
+</p>
+
+<!---------------------------------------------------------------------------->
+
+<a name="license"></a>
+<h2>License</h2>
+<p>
+Teal is free and open source software.<br/>Its <a href="https://github.com/teal-language/tl/blob/master/LICENSE">license</a> is MIT, the same as Lua.
+</p>
+
+</div>
+
+<div class="bottom-spacer"></div>
+</div>
+</body>
+</html>
