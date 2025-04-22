@@ -156,14 +156,25 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="introduction-this-projects-goals"><a class="header" href="#introduction-this-projects-goals">Introduction: this project's goals</a></h2>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
+<p>This book is the primary source of documentation for the Teal programming
+language.</p>
+<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
+Lua with type annotations, allowing you to specify arrays, maps and records,
+as well as interfaces, union types and generics.</p>
+<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
+but adhering to Lua's spirit of minimalism, portability and embeddability.</p>
+<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
+which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="this-projects-goals"><a class="header" href="#this-projects-goals">This project's goals</a></h2>
 <p>This project comes from the desire of a practical Lua dialect for
 programming-in-the-large. This is inspired by the experiences working on <a href="http://konghq.com">two
 large</a> <a href="http://luarocks.org">Lua applications</a>.</p>
 <p>The goal of the language is to be a dialect of Lua as much as TypeScript is a
 dialect of JavaScript. So yes, it is on the one hand a different language
 (there are new keywords such as <code>global</code> for example) but on the other hand it
-is pretty much recognizable, as you said, as "Lua + typing".</p>
+is pretty much recognizable as "Lua + typing".</p>
 <p>It aims to integrate to pretty much any Lua environment, since it's a
 "transpiler" that generates plain Lua and has no dependencies. The goal is to
 support at least both the latest PUC-Rio Lua and the latest LuaJIT as output
@@ -209,7 +220,7 @@ about it and have you document it via types. It will also constantly check
 that this "documentation" is not out of date. Coding with types is like pair
 programming with the machine.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="programming-with-types-in-teal"><a class="header" href="#programming-with-types-in-teal">Programming with Types in Teal</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
+<h2 id="welcome-to-teal-1"><a class="header" href="#welcome-to-teal-1">Welcome to Teal!</a></h2>
 <p>In this tutorial chapter, we will go through the basics so you can get up and running
 type checking your Lua code, through the use of Teal, a typed dialect of Lua.</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="installing-tl"><a class="header" href="#installing-tl">Installing tl</a></h2>
@@ -2043,22 +2054,6 @@ associative. All other binary operators are left associative.</p>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

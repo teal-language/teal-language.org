@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>This project&#x27;s goals - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -155,14 +155,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="introduction-this-projects-goals"><a class="header" href="#introduction-this-projects-goals">Introduction: this project's goals</a></h2>
+                        <h2 id="this-projects-goals"><a class="header" href="#this-projects-goals">This project's goals</a></h2>
 <p>This project comes from the desire of a practical Lua dialect for
 programming-in-the-large. This is inspired by the experiences working on <a href="http://konghq.com">two
 large</a> <a href="http://luarocks.org">Lua applications</a>.</p>
 <p>The goal of the language is to be a dialect of Lua as much as TypeScript is a
 dialect of JavaScript. So yes, it is on the one hand a different language
 (there are new keywords such as <code>global</code> for example) but on the other hand it
-is pretty much recognizable, as you said, as "Lua + typing".</p>
+is pretty much recognizable as "Lua + typing".</p>
 <p>It aims to integrate to pretty much any Lua environment, since it's a
 "transpiler" that generates plain Lua and has no dependencies. The goal is to
 support at least both the latest PUC-Rio Lua and the latest LuaJIT as output
@@ -186,6 +186,9 @@ to see a community of users and contributors grow around it over time!</p>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
                             <a rel="next prefetch" href="why_types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
@@ -197,6 +200,9 @@ to see a community of users and contributors grow around it over time!</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
                     <a rel="next prefetch" href="why_types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
@@ -205,22 +211,6 @@ to see a community of users and contributors grow around it over time!</p>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
