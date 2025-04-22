@@ -198,10 +198,6 @@ ul#top-menu-list li {
    display: inline;
 }
 
-ul#top-menu-list li + li::before {
-   content: " | ";
-}
-
 ul#top-menu-list li a {
    color: #000000;
    text-decoration: none;
@@ -335,10 +331,10 @@ div.bottom {
 <div class="hspacer"></div>
 <ul id="top-menu-list">
 <li><a href="#about">about</a></li>
-<li><a href="#playground">play</a></li>
-<li><a href="#download">download</a></li>
-<li><a href="#documentation">docs</a></li>
-<li><a href="#community">community</a></li>
+<li><span aria-hidden="true">|</span> <a href="#playground">play</a></li>
+<li><span aria-hidden="true">|</span> <a href="#download">download</a></li>
+<li><span aria-hidden="true">|</span> <a href="#documentation">docs</a></li>
+<li><span aria-hidden="true">|</span> <a href="#community">community</a></li>
 </ul>
 </div>
 
